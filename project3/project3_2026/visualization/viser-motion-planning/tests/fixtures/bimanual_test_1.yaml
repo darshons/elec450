@@ -1,0 +1,127 @@
+name: project5
+fixed_frame_transforms:
+  - child_frame_id: panda_link0
+    transform:
+      rotation: [0, 0, 0, 1]
+      translation: [0, 0, 0]
+world:
+  collision_objects:
+    # - id: Box1
+    #   primitives:
+    #     - type: box
+    #       dimensions: [0.2, 0.4, 0.05]
+    #   primitive_poses:
+    #     - position: [-0.5, 0, 0.45]
+    #       orientation: [0.724, -0.122, 0.562, 0.382]
+    # - id: Box2
+    #   primitives:
+    #     - type: box
+    #       dimensions: [0.2, 0.3, 0.4]
+    #   primitive_poses:
+    #     - position: [0.45, 0, 0.75]
+    #       orientation: [0, 0, 0, 1] 
+    # - id: Sphere1
+    #   primitives:
+    #     - type: sphere
+    #       dimensions: [0.1]
+    #   primitive_poses:
+    #     - position: [0.0, 0.5, 0.5]
+    #       orientation: [0, 0, 0, 1]
+    # - id: Sphere2
+    #   primitives:
+    #     - type: sphere
+    #       dimensions: [0.15]
+    #   primitive_poses:
+    #     - position: [0.0, -0.5, 0.5]
+    #       orientation: [0, 0, 0, 1]
+    - id: Sphere3
+      primitives:
+        - type: sphere
+          dimensions: [0.2]
+      primitive_poses:
+        - position: [0.8, 0.5, 0.3]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere4
+      primitives:
+        - type: sphere
+          dimensions: [0.2]
+      primitive_poses:
+        - position: [-0.8, 0.5, 0.3]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere5
+      primitives:
+        - type: sphere
+          dimensions: [0.3]
+      primitive_poses:
+        - position: [0.8, -0.5, 0.3]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere6
+      primitives:
+        - type: sphere
+          dimensions: [0.3]
+      primitive_poses:
+        - position: [-0.8, -0.5, 0.3]
+          orientation: [0, 0, 0, 1]
+    # - id: Sphere7
+    #   primitives:
+    #     - type: sphere
+    #       dimensions: [0.1]
+    #   primitive_poses:
+    #     - position: [0.0, 0.0, 0.8]
+    #       orientation: [0, 0, 0, 1]
+    - id: Sphere8
+      primitives:
+        - type: sphere
+          dimensions: [0.2]
+      primitive_poses:
+        - position: [0.5, 0.5, 0.8]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere9
+      primitives:
+        - type: sphere
+          dimensions: [0.2]
+      primitive_poses:
+        - position: [-0.5, 0.5, 0.8]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere10
+      primitives:
+        - type: sphere
+          dimensions: [0.2]
+      primitive_poses:
+        - position: [0.5, -0.5, 0.8]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere11
+      primitives:
+        - type: sphere
+          dimensions: [0.2]
+      primitive_poses:
+        - position: [-0.5, -0.5, 0.8]
+          orientation: [0, 0, 0, 1]
+    # - id: Sphere12
+    #   primitives:
+    #     - type: sphere
+    #       dimensions: [0.15]
+    #   primitive_poses:
+    #     - position: [0.0, 0.8, 0.2]
+    #       orientation: [0, 0, 0, 1]
+    - id: Sphere13
+      primitives:
+        - type: sphere
+          dimensions: [0.15]
+      primitive_poses:
+        - position: [0.0, -0.8, 0.2]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere14
+      primitives:
+        - type: sphere
+          dimensions: [0.1]
+      primitive_poses:
+        - position: [0.3, 0.0, 1.2]
+          orientation: [0, 0, 0, 1]
+    - id: Sphere15
+      primitives:
+        - type: sphere
+          dimensions: [0.1]
+      primitive_poses:
+        - position: [-0.3, 0.0, 1.2]
+          orientation: [0, 0, 0, 1]

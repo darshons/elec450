@@ -1,0 +1,49 @@
+# Box dimensions are half-extents; orientations are [x, y, z, w].
+# Joint configurations are radians in panda_joint1..panda_joint7 order.
+# Table with a slanted wall splitting it into a left and right side, and a
+# ball hanging over the wall so the arm cannot just swing straight across.
+name: wall
+world:
+  collision_objects:
+  - id: table
+    primitives:
+    - type: box
+      dimensions: [0.25, 0.55, 0.02]
+    primitive_poses:
+    - position: [0.6, 0.0, 0.15]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: wall
+    primitives:
+    - type: box
+      dimensions: [0.22, 0.02, 0.22]
+    primitive_poses:
+    - position: [0.58, 0.0, 0.39]
+      orientation: [0.0, 0.0, 0.2164, 0.9763]
+  - id: hanging_ball
+    primitives:
+    - type: sphere
+      dimensions: [0.09]
+    primitive_poses:
+    - position: [0.45, 0.0, 0.78]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: left_ball
+    primitives:
+    - type: sphere
+      dimensions: [0.06]
+    primitive_poses:
+    - position: [0.72, 0.3, 0.23]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: right_block
+    primitives:
+    - type: box
+      dimensions: [0.05, 0.05, 0.08]
+    primitive_poses:
+    - position: [0.7, -0.32, 0.25]
+      orientation: [0.0, 0.0, 0.3827, 0.9239]
+queries:
+- name: query1
+  start: [0.55, 0.2, 0.0, -2.0, 0.0, 2.2, 0.785]
+  goal: [-0.55, 0.4, 0.0, -1.4, 0.0, 1.8, 0.785]
+- name: query2
+  start: [0.55, 0.4, 0.0, -1.4, 0.0, 1.8, 0.785]
+  goal: [-0.55, 0.0, 0.0, -1.6, 0.0, 1.6, 0.785]

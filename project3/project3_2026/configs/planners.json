@@ -1,0 +1,154 @@
+{
+  "common": {
+    "time_limit": 5.0,
+    "resolution": 0.005
+  },
+  "planners": [
+    {
+      "name": "RTP_gb0.01",
+      "planner": "RTP",
+      "settings": {
+        "goal_bias": 0.01
+      }
+    },
+    {
+      "name": "RTP_gb0.05",
+      "planner": "RTP",
+      "settings": {
+        "goal_bias": 0.05
+      }
+    },
+    {
+      "name": "RTP_gb0.1",
+      "planner": "RTP",
+      "settings": {
+        "goal_bias": 0.1
+      }
+    },
+    {
+      "name": "RTP_gb0.2",
+      "planner": "RTP",
+      "settings": {
+        "goal_bias": 0.2
+      }
+    },
+    {
+      "name": "RTP_gb0.5",
+      "planner": "RTP",
+      "settings": {
+        "goal_bias": 0.5
+      }
+    },
+    {
+      "name": "RRT_gb0.05_r0.2",
+      "planner": "RRT",
+      "settings": {
+        "goal_bias": 0.05,
+        "planner_range": 0.2
+      }
+    },
+    {
+      "name": "RRT_gb0.05_r0.4",
+      "planner": "RRT",
+      "settings": {
+        "goal_bias": 0.05,
+        "planner_range": 0.4
+      }
+    },
+    {
+      "name": "RRT_gb0.05_r1.0",
+      "planner": "RRT",
+      "settings": {
+        "goal_bias": 0.05,
+        "planner_range": 1.0
+      }
+    },
+    {
+      "name": "RRT_gb0.05_r2.5",
+      "planner": "RRT",
+      "settings": {
+        "goal_bias": 0.05,
+        "planner_range": 2.5
+      }
+    },
+    {
+      "name": "RRT_gb0.01_r1.0",
+      "planner": "RRT",
+      "settings": {
+        "goal_bias": 0.01,
+        "planner_range": 1.0
+      }
+    },
+    {
+      "name": "RRT_gb0.2_r1.0",
+      "planner": "RRT",
+      "settings": {
+        "goal_bias": 0.2,
+        "planner_range": 1.0
+      }
+    },
+    {
+      "name": "RRTConnect_r0.2",
+      "planner": "RRTConnect",
+      "settings": {
+        "planner_range": 0.2
+      }
+    },
+    {
+      "name": "RRTConnect_r0.4",
+      "planner": "RRTConnect",
+      "settings": {
+        "planner_range": 0.4
+      }
+    },
+    {
+      "name": "RRTConnect_r1.0",
+      "planner": "RRTConnect",
+      "settings": {
+        "planner_range": 1.0
+      }
+    },
+    {
+      "name": "RRTConnect_r2.5",
+      "planner": "RRTConnect",
+      "settings": {
+        "planner_range": 2.5
+      }
+    },
+    {
+      "name": "RRTConnect_r5.0",
+      "planner": "RRTConnect",
+      "settings": {
+        "planner_range": 5.0
+      }
+    },
+    {
+      "name": "PRM_k5",
+      "planner": "PRM",
+      "settings": {
+        "max_neighbors": 5
+      }
+    },
+    {
+      "name": "PRM_k10",
+      "planner": "PRM",
+      "settings": {
+        "max_neighbors": 10
+      }
+    },
+    {
+      "name": "PRM_k20",
+      "planner": "PRM",
+      "settings": {
+        "max_neighbors": 20
+      }
+    },
+    {
+      "name": "PRM_k40",
+      "planner": "PRM",
+      "settings": {
+        "max_neighbors": 40
+      }
+    }
+  ]
+}

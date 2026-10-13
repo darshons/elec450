@@ -1,0 +1,56 @@
+# Box dimensions are half-extents; orientations are [x, y, z, w].
+# Joint configurations are radians in panda_joint1..panda_joint7 order.
+# A window frame in front of the robot with a shelf and a ball behind it.
+# The arm starts off to the side and has to reach through the opening.
+name: window
+world:
+  collision_objects:
+  - id: frame_top
+    primitives:
+    - type: box
+      dimensions: [0.03, 0.37, 0.03]
+    primitive_poses:
+    - position: [0.45, 0.0, 0.84]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: frame_bottom
+    primitives:
+    - type: box
+      dimensions: [0.03, 0.37, 0.03]
+    primitive_poses:
+    - position: [0.45, 0.0, 0.3]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: frame_left
+    primitives:
+    - type: box
+      dimensions: [0.03, 0.03, 0.3]
+    primitive_poses:
+    - position: [0.45, 0.34, 0.57]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: frame_right_tilted
+    primitives:
+    - type: box
+      dimensions: [0.03, 0.03, 0.3]
+    primitive_poses:
+    - position: [0.45, -0.3, 0.57]
+      orientation: [0.1305, 0.0, 0.0, 0.9914]
+  - id: back_shelf
+    primitives:
+    - type: box
+      dimensions: [0.12, 0.25, 0.02]
+    primitive_poses:
+    - position: [0.68, 0.0, 0.35]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+  - id: ball_on_shelf
+    primitives:
+    - type: sphere
+      dimensions: [0.06]
+    primitive_poses:
+    - position: [0.7, -0.12, 0.43]
+      orientation: [0.0, 0.0, 0.0, 1.0]
+queries:
+- name: query1
+  start: [1.3, 0.0, 0.0, -2.0, 0.0, 2.0, 0.785]
+  goal: [0.0, 0.0, 0.0, -1.8, 0.0, 1.8, 0.785]
+- name: query2
+  start: [-1.3, -0.2, 0.0, -2.2, 0.0, 2.0, 0.785]
+  goal: [0.0, 0.2, 0.0, -1.4, 0.0, 1.6, 0.785]
