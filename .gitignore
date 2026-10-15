@@ -3,4 +3,7 @@ __pycache__/
 *.so
 *.aux
 *.log
+# Preserve native experiment logs when recovered; TeX/build logs remain ignored.
+!project3/project3_2026/results/**/*_logs/*.log
+!project3/project3_2026/results/*_logs/*.log
 *.out
