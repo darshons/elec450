@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.19)
+project(rtp_lifecycle_check LANGUAGES CXX)
+find_package(ompl CONFIG REQUIRED)
+add_executable(check_rtp_lifecycle check_rtp_lifecycle.cpp ../../src/RTP.cpp)
+target_compile_features(check_rtp_lifecycle PRIVATE cxx_std_17)
+target_include_directories(check_rtp_lifecycle PRIVATE ../../src)
+target_link_libraries(check_rtp_lifecycle PRIVATE ompl::ompl)

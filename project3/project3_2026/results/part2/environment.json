@@ -1,0 +1,207 @@
+{
+  "date_local": "2026-10-18",
+  "timezone": "America/Chicago",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "python": "3.12.12 | packaged by conda-forge | (main, Oct 13 2025, 14:47:45) [Clang 19.1.7 ]",
+  "executable": "/opt/homebrew/Cellar/micromamba/2.9.0/envs/ompl_env/bin/python",
+  "compiler": "AppleClang 17.0.0.17000013",
+  "ompl": "2.0.2",
+  "cmake_build_type": "Release",
+  "packages": {
+    "nanobind": "3.1.0",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.1",
+    "viser": "1.1.0",
+    "yourdfpy": "0.0.60"
+  },
+  "file_sha256": {
+    "configs/planners.json": "3896a85270c147908a2a25ce4bcd4c76e9a49b794af5bfbd5e97c51471e11acf",
+    "resources/scenes/clutter.yaml": "390335d946eaeba2fa223053a108b0656719f08ba22ce1713732d3c6193c8542",
+    "src/RTP.cpp": "1ea3c9c398d7f10fabc3b1889b1d924ab4f1e27bed1478f7d95018a96cf21509",
+    "src/RTP.h": "994f6539634e66bb73f127ddfa66aeeebc3afaef9042e29173848349199e135e",
+    "provided/bindings.cpp": "0ee0438e47b41081788169af4ac2ca789dbe7f0d0a3ff98deb08cbce9e3ce0ef",
+    "provided/ArmPlanning.cpp": "63ed0a68cea99b11e1ffac7dfdec3270de324eda854c909a7df6956d4930e9cb",
+    "provided/CollisionChecking3D.cpp": "6dd58f230fbdc1807990542b224a96e8202f8111d18b93fe160212d640758a1b",
+    "CMakeLists.txt": "4b284a6cbc06d93fa1fda1f9e7717fae84ddc62f7b0f85075d300b450deee9aa"
+  },
+  "config": {
+    "common": {
+      "time_limit": 5.0,
+      "resolution": 0.005
+    },
+    "planners": [
+      {
+        "name": "RTP_gb0.01",
+        "planner": "RTP",
+        "settings": {
+          "goal_bias": 0.01
+        }
+      },
+      {
+        "name": "RTP_gb0.05",
+        "planner": "RTP",
+        "settings": {
+          "goal_bias": 0.05
+        }
+      },
+      {
+        "name": "RTP_gb0.1",
+        "planner": "RTP",
+        "settings": {
+          "goal_bias": 0.1
+        }
+      },
+      {
+        "name": "RTP_gb0.2",
+        "planner": "RTP",
+        "settings": {
+          "goal_bias": 0.2
+        }
+      },
+      {
+        "name": "RTP_gb0.5",
+        "planner": "RTP",
+        "settings": {
+          "goal_bias": 0.5
+        }
+      },
+      {
+        "name": "RRT_gb0.05_r0.2",
+        "planner": "RRT",
+        "settings": {
+          "goal_bias": 0.05,
+          "planner_range": 0.2
+        }
+      },
+      {
+        "name": "RRT_gb0.05_r0.4",
+        "planner": "RRT",
+        "settings": {
+          "goal_bias": 0.05,
+          "planner_range": 0.4
+        }
+      },
+      {
+        "name": "RRT_gb0.05_r1.0",
+        "planner": "RRT",
+        "settings": {
+          "goal_bias": 0.05,
+          "planner_range": 1.0
+        }
+      },
+      {
+        "name": "RRT_gb0.05_r2.5",
+        "planner": "RRT",
+        "settings": {
+          "goal_bias": 0.05,
+          "planner_range": 2.5
+        }
+      },
+      {
+        "name": "RRT_gb0.01_r1.0",
+        "planner": "RRT",
+        "settings": {
+          "goal_bias": 0.01,
+          "planner_range": 1.0
+        }
+      },
+      {
+        "name": "RRT_gb0.2_r1.0",
+        "planner": "RRT",
+        "settings": {
+          "goal_bias": 0.2,
+          "planner_range": 1.0
+        }
+      },
+      {
+        "name": "RRTConnect_r0.2",
+        "planner": "RRTConnect",
+        "settings": {
+          "planner_range": 0.2
+        }
+      },
+      {
+        "name": "RRTConnect_r0.4",
+        "planner": "RRTConnect",
+        "settings": {
+          "planner_range": 0.4
+        }
+      },
+      {
+        "name": "RRTConnect_r1.0",
+        "planner": "RRTConnect",
+        "settings": {
+          "planner_range": 1.0
+        }
+      },
+      {
+        "name": "RRTConnect_r2.5",
+        "planner": "RRTConnect",
+        "settings": {
+          "planner_range": 2.5
+        }
+      },
+      {
+        "name": "RRTConnect_r5.0",
+        "planner": "RRTConnect",
+        "settings": {
+          "planner_range": 5.0
+        }
+      },
+      {
+        "name": "PRM_k5",
+        "planner": "PRM",
+        "settings": {
+          "max_neighbors": 5
+        }
+      },
+      {
+        "name": "PRM_k10",
+        "planner": "PRM",
+        "settings": {
+          "max_neighbors": 10
+        }
+      },
+      {
+        "name": "PRM_k20",
+        "planner": "PRM",
+        "settings": {
+          "max_neighbors": 20
+        }
+      },
+      {
+        "name": "PRM_k40",
+        "planner": "PRM",
+        "settings": {
+          "max_neighbors": 40
+        }
+      }
+    ]
+  },
+  "pilot": {
+    "command": "python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 1 --time-limit 1 --seed 18001 --output results/pilot/benchmark.db",
+    "runs": 100,
+    "exact": 86,
+    "approximate": 14,
+    "failed": 0,
+    "solve_seconds_sum": 24.263987
+  },
+  "final": {
+    "command": "python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 5 --seed 18002 --output results/part2/benchmark.db",
+    "runs_expected": 500,
+    "time_limit_seconds": 5,
+    "memory_limit_MB": 1024,
+    "complete": true,
+    "runs_actual": 500,
+    "outcomes": {
+      "5": 22,
+      "6": 478
+    },
+    "solve_seconds_sum": 220.440304
+  },
+  "execution": "Sequential timed trials; no concurrent planner trials, test jobs, browser rendering, or builds. Normal OS background activity uncontrolled.",
+  "seed_notes": "Global OMPL initialization seed per invocation. RNGs advance across queries/planners/trials; experiment.seed is not an independently reset trial seed. Native logs and CSV retain available seeds. Timing termination makes bitwise reproducibility unlikely.",
+  "fixed_model": "59 Panda robot spheres vs environment spheres/oriented boxes; URDF joint bounds; resolution 0.005; minimum-clearance sampling uses validSegmentCount; request.simplify=false",
+  "pilot_decision": "1 s produced 14 approximate endpoints among 100 runs. Select 5 s common budget to allow harder settings longer while keeping 500 runs practical. Pilot is excluded from final comparisons."
+}

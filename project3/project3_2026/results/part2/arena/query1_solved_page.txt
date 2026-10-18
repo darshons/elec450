@@ -1,0 +1,57 @@
+Planner Arena
+Overall performance
+Progress
+Regression
+Database info
+Change database
+Help
+If you use Planner Arena or the OMPL benchmarking facilities, then we kindly ask you to include the following citation in your publications:
+Mark Moll, Ioan A. Șucan, Lydia E. Kavraki, Benchmarking Motion Planning Algorithms: An Extensible Infrastructure for Analysis and Visualization, IEEE Robotics & Automation Magazine, 22(3):96–102, September 2015. doi: 10.1109/MRA.2015.2448276.
+Download plot as PDF
+Download plot as Python pickle file
+planner
+	
+missing
+	
+total
+
+PRM_k10	0	5
+RRTConnect_r1.0	0	5
+RRT_gb0.05_r1.0	0	5
+RTP_gb0.2	0	5
+Motion planning problem
+clutter_query1_group1
+clutter_query2_group1
+clutter_query3_group1
+clutter_query4_group1
+clutter_query5_group1
+Benchmark attribute
+approximate solution
+correct solution
+correct solution strict
+graph motions
+graph states
+memory
+minimum clearance
+solution clearance
+solution difference
+solution length
+solution segments
+solution smoothness
+solved
+status
+time
+valid segment fraction
+approx goal distance
+best cost
+edge count
+iterations
+milestone count
+ Show advanced options
+Version
+OMPL 2.0.2
+Selected planners
+ RTP_gb0.05  RTP_gb0.1  RTP_gb0.5  RRT_gb0.05_r0.4  RRT_gb0.05_r0.2  RRT_gb0.05_r1.0  RRTConnect_r0.2  RRTConnect_r0.4  RRTConnect_r1.0  PRM_k5  PRM_k10  PRM_k20  RTP_gb0.01  RTP_gb0.2  RRT_gb0.05_r2.5  RRT_gb0.01_r1.0  RRT_gb0.2_r1.0  RRTConnect_r2.5  RRTConnect_r5.0  PRM_k40
+Use arrow keys to resize the sidebar, Shift for larger steps, Home/End for min/max width.
+Created by Mark Moll • Hosted by the Kavraki Lab at Rice University • Repository hosted on GitHub
+Funded in part by the National Science Foundation

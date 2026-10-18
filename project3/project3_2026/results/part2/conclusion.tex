@@ -1,0 +1,17 @@
+\textbf{Best observed settings.} Across all settings, the fastest median was RRT-Connect $r=2.5$ (.0189 s), the shortest was RRT-Connect $r=.2$ (4.114 rad), smoothest was PRM $k=10$ (.400), and greatest sampled minimum clearance was RTP $b=.05$ (10.57 cm). Each used 25 exact paths. Excluding paths that failed the finer check changes the shortest median to RRT $b=.05,r=1$ (4.117 rad, 23 paths); the other overall winners stay the same. The best settings for each planner in the main comparison were:
+\begin{center}
+\begin{minipage}[c]{.46\linewidth}\centering
+\includegraphics[width=\linewidth,height=1.25in,keepaspectratio]{results/part2/arena/query1_time.pdf}
+\captionof{figure}{Planner Arena query1 solve times, five runs per setting; downloaded after uploading our database.}
+\end{minipage}\hfill
+\begin{minipage}[c]{.51\linewidth}\centering\scriptsize
+\begin{tabular}{lcccc}\toprule
+planner & time & length & smoothness & clearance\\\midrule
+RTP ($b$) & .5 & .5 & .5 & .05\\
+RRT ($b,r$) & (.05,1)&(.05,1)&(.05,2.5)&(.05,2.5)\\
+RRT-Connect ($r$)&2.5&.2&5&2.5\\
+PRM ($k$)&10&5&10&5\\\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+RRT-Connect $r=2.5$ gave a good balance in our tests: 25/25 exact, .019 s median, 5.61 rad length and 8.83 cm clearance. Range .2 gave shorter paths but 6/25 failed the finer check; all 25 at range 2.5 passed it. Increasing RTP's goal bias made it faster, but its paths were still long. These conclusions are limited to this scene and sample size; small differences between medians may be due to chance.

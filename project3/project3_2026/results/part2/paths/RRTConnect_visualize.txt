@@ -1,0 +1,13 @@
+Info:    RRTConnect: Starting planning with 1 states already in datastructure
+Info:    RRTConnect: Created 7 states (5 start + 2 goal)
+Info:    Solution found in 0.012681 seconds
+RRTConnect: exact, 0.0127 s, 5 waypoints; saved results/part2/paths/RRTConnect.json
+╭────── viser (listening *:8212) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8212   │
+│   Websocket │ ws://localhost:8212     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+(viser) Connection opened (0, 1 total), 131 persistent messages
+Path viewer: http://localhost:8212 (Ctrl+C to stop)
+(viser) Connection closed (0, 0 total)

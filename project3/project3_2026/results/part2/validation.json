@@ -1,0 +1,98 @@
+{
+  "date_local": "2026-10-18",
+  "final_build": "micromamba run -n ompl_env make: passed",
+  "rtp_source_changes": false,
+  "part1_preserved": "git diff --exit-code confirmed unchanged RTP, custom scenes, saved RTP paths, Part 1 report and specified Part 1 images; original Part 1 archive left untouched",
+  "support_checks": {
+    "passed": 7,
+    "skipped": 1,
+    "note": "Skipped old placeholder RTP check; completed RTP is checked by lifecycle test"
+  },
+  "benchmark_checks": {
+    "passed": 4,
+    "log": "check_benchmark.txt"
+  },
+  "rtp_lifecycle": "Passed 25 clear/reuse cycles, exact/approximate/continuation/trivial/invalid-start, tree labels/edges, independent path ownership and balanced state allocation; no general leak-detector claim",
+  "historical_artifact_audit": "Passed; see check_preserved_artifacts.json. Main database/report references point to archived October 14 copies.",
+  "fresh_study_audit": "analyze_part2.py passed integrity, status enums/flags, planner parameters, query endpoints, resolution and complete 20 x 5 x 5 matrix",
+  "run_outcomes": {
+    "5": 22,
+    "6": 478
+  },
+  "pilot_runs": 100,
+  "native_log_reconversion": "All rows in runs, experiments, plannerConfigs, enums and progress exactly match a fresh converter reconstruction",
+  "canonical_db_sha256": "eab3dc452388111bfe7592691705c245d1d7beab95512d37f3eecce510ac6530",
+  "report": {
+    "file": "pdf/project3_report.pdf",
+    "pages": 5,
+    "sha256": "840db437f20e89db44da93a79811b487ec1887cd2798348531efd799781f11b5",
+    "layout": "All five pages rendered and visually inspected; no overfull boxes. Nonfatal package encoding/underfull caption warnings retained in report_build.log."
+  },
+  "representatives": "Four exact JSON paths; plan_arm.py --visualize playback and Viser overview captured; candidate closest to benchmark query1 median among five prespecified seeds; dense sampled checks at .002 rad positive for all four, not continuous proofs",
+  "planner_arena": "Uploaded canonical DB and downloaded query1 time/solved/minimum-clearance PDFs; see arena/provenance.json; time PDF included in report",
+  "cleanup": "make clean completed before packaging; build directory and planner extension absent",
+  "remaining_manual_steps": [
+    "Partners review retained difficulty ratings and hour estimates",
+    "Submit Part 2 archive and PDF on Canvas"
+  ],
+  "accuracy_review": {
+    "file": "accuracy_review.md",
+    "independent_audit_tests": 5,
+    "audit_log": "reverify_data.txt",
+    "native_support_recheck": "7 passed, 1 intentionally skipped (reverify_support.txt)",
+    "native_benchmark_recheck": "4 passed (reverify_benchmark.txt)",
+    "archive_build": "Original submission extracted in a new /tmp directory and built with micromamba run -n ompl_env make. Native build inputs match current sources. Extracted copy and working checkout cleaned afterward.",
+    "lifecycle_recheck": "Passed, including 25 reuse cycles (reverify_lifecycle.txt)",
+    "strict_collision_diagnostic": {
+      "exact": 478,
+      "prescribed_check_passed": 478,
+      "strict_check_passed": 464,
+      "strict_check_failed": 14,
+      "failed_by_family": {
+        "RRT": 4,
+        "RRTConnect": 10
+      },
+      "RRTConnect_r0.2_strict_failed": 6,
+      "OMPL_check": "post-solve PathGeometric::check at 4x validSegmentCountFactor, then restore",
+      "primary_comparison": "unchanged: exact status at prescribed resolution",
+      "secondary_file": "strict_sensitivity.csv",
+      "secondary_shortest": {
+        "config": "RRT_gb0.05_r1.0",
+        "length_median_rad": 4.11743,
+        "exact_strict_passed": 23
+      }
+    },
+    "reproducibility_fixes": [
+      "--fig-dir isolates reproduction figures",
+      "trial-count labels and query heatmap scale derive from repetitions"
+    ],
+    "pilot_analysis_regression": "100 pilot records analyzed separately into /tmp with five-run-per-setting labels",
+    "primary_data_changed": false,
+    "fresh_linux_recheck": false
+  },
+  "work_split": {
+    "confirmed_by": "Winson",
+    "shared": "RTP scene testing, Part 1 write-up and packaging, final report and submission",
+    "target_dates_2026": {
+      "Darshon: RTP implementation": "October 13",
+      "Winson: custom environments": "October 13",
+      "Part 1 submission": "October 13",
+      "Winson: benchmark experiments": "October 17",
+      "Darshon: results analysis": "October 18",
+      "final report": "October 18"
+    },
+    "official_deadlines_2026": {
+      "Part 1": "October 15",
+      "Part 2": "October 20"
+    },
+    "Darshon": "RTP implementation, debugging, memory management and results analysis",
+    "Winson": "custom scenes, start-goal queries, Viser screenshots and saved paths, benchmark configuration and experiments"
+  },
+  "editorial_review": {
+    "scope": "Final report and README",
+    "changes": "Replaced awkward dated/audit wording with direct student prose; clarified captions, setup, results discussion and conclusions. Contributions use first names.",
+    "measurements_changed": false,
+    "report_pages": 5,
+    "checks": "All five pages visually inspected; independent data audit passed; no overfull text boxes."
+  }
+}

@@ -1,0 +1,13 @@
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 6 states, exact solution with 4 waypoints
+Info:    Solution found in 0.068771 seconds
+RTP: exact, 0.0688 s, 4 waypoints; saved results/part2/paths/RTP.json
+╭────── viser (listening *:8210) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8210   │
+│   Websocket │ ws://localhost:8210     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+Path viewer: http://localhost:8210 (Ctrl+C to stop)
+(viser) Connection opened (0, 1 total), 481 persistent messages
+(viser) Connection closed (0, 0 total)

@@ -1,0 +1,778 @@
+OMPL version 2.0.2
+Experiment clutter_query4_group1
+0 experiment properties
+Running on Winsons-MacBook-Air-322.local
+Starting at 2026-10-18 11:32:46
+<<<|
+Properties of the state space 'RealVectorSpace3'
+  - signature: 2 1 7 
+  - dimension: 7
+  - extent: 13.4165
+  - sanity checks for state space passed
+  - probability of valid states: 0.936
+  - average length of a valid motion: 3.67662
+  - average number of samples drawn per second: sampleUniform()=1.5873e+07 sampleUniformNear()=2.38095e+07 sampleGaussian()=4.23729e+06
+Settings for the state space 'RealVectorSpace3'
+  - state validity check resolution: 0.5%
+  - valid segment count factor: 1
+  - state space:
+Real vector state space 'RealVectorSpace3' of dimension 7 with bounds: 
+  - min: -2.9671 -1.8326 -2.9671 -3.1416 -2.9671 -0.0873 -2.9671 
+  - max: 2.9671 1.8326 2.9671 0.0873 2.9671 3.8223 2.9671 
+
+Declared parameters:
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+Valid state sampler named uniform with parameters:
+nr_attempts = 100
+Start states:
+RealVectorState [-1.04 0.16 -0.43 -2.23 -0.14 1.22 1.01]
+Goal state, threshold = 2.22045e-16, memory address = 0x11e810a58, state = 
+RealVectorState [1.12 -0.56 0.15 -1.94 0.07 2.17 0.31]
+OptimizationObjective = nullptr
+There are 0 solutions
+
+Properties of benchmarked planners:
+Planner RTP_gb0.01 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias
+Planner RTP_gb0.05 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias
+Planner RTP_gb0.1 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias
+Planner RTP_gb0.2 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias
+Planner RTP_gb0.5 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias
+Planner RRT_gb0.05_r0.2 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias intermediate_states range
+Planner RRT_gb0.05_r0.4 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias intermediate_states range
+Planner RRT_gb0.05_r1.0 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias intermediate_states range
+Planner RRT_gb0.05_r2.5 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias intermediate_states range
+Planner RRT_gb0.01_r1.0 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias intermediate_states range
+Planner RRT_gb0.2_r1.0 specs:
+Multithreaded:                 No
+Reports approximate solutions: Yes
+Can optimize solutions:        No
+Aware of the following parameters: goal_bias intermediate_states range
+Planner RRTConnect_r0.2 specs:
+Multithreaded:                 No
+Reports approximate solutions: No
+Can optimize solutions:        No
+Aware of the following parameters: intermediate_states range
+Planner RRTConnect_r0.4 specs:
+Multithreaded:                 No
+Reports approximate solutions: No
+Can optimize solutions:        No
+Aware of the following parameters: intermediate_states range
+Planner RRTConnect_r1.0 specs:
+Multithreaded:                 No
+Reports approximate solutions: No
+Can optimize solutions:        No
+Aware of the following parameters: intermediate_states range
+Planner RRTConnect_r2.5 specs:
+Multithreaded:                 No
+Reports approximate solutions: No
+Can optimize solutions:        No
+Aware of the following parameters: intermediate_states range
+Planner RRTConnect_r5.0 specs:
+Multithreaded:                 No
+Reports approximate solutions: No
+Can optimize solutions:        No
+Aware of the following parameters: intermediate_states range
+Planner PRM_k5 specs:
+Multithreaded:                 Yes
+Reports approximate solutions: Yes
+Can optimize solutions:        Yes
+Aware of the following parameters: max_nearest_neighbors
+Planner PRM_k10 specs:
+Multithreaded:                 Yes
+Reports approximate solutions: Yes
+Can optimize solutions:        Yes
+Aware of the following parameters: max_nearest_neighbors
+Planner PRM_k20 specs:
+Multithreaded:                 Yes
+Reports approximate solutions: Yes
+Can optimize solutions:        Yes
+Aware of the following parameters: max_nearest_neighbors
+Planner PRM_k40 specs:
+Multithreaded:                 Yes
+Reports approximate solutions: Yes
+Can optimize solutions:        Yes
+Aware of the following parameters: max_nearest_neighbors
+|>>>
+<<<|
+|>>>
+18001 is the random seed
+1 seconds per run
+1024 MB per run
+1 runs per planner
+5.87694 seconds spent to collect the data
+1 enum type
+status|Unknown status|Invalid start|Invalid goal|Unrecognized goal type|Timeout|Approximate solution|Exact solution|Crash|Unknown status|Unknown status
+20 planners
+geometric_RTP_gb0.01
+6 common properties
+goal_bias = 0.01
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+15 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+1; 1; 1; 90; 91; 18.4844; 0.259441; 1.2827; 30.5307; 6; 0.854177; 0; 5; 1.07501; 0.642857; 
+.
+geometric_RTP_gb0.05
+6 common properties
+goal_bias = 0.05
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 31; 32; 18.4844; 0.10844637661196883; 0.27659; 0; 32.5552; 7; 1.03376; 1; 6; 0.344376; 0.632653; 
+.
+geometric_RTP_gb0.1
+6 common properties
+goal_bias = 0.1
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 7; 8; 18.4531; 0.032765094033926224; 0.214011; 0; 16.3947; 3; 0.333092; 1; 6; 0.073952; 0.7; 
+.
+geometric_RTP_gb0.2
+6 common properties
+goal_bias = 0.2
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 10; 11; 18.4531; 0.1592205279649293; 0.274927; 0; 6.39917; 2; 0.552632; 1; 6; 0.079719; 0.555556; 
+.
+geometric_RTP_gb0.5
+6 common properties
+goal_bias = 0.5
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 2; 3; 18.4531; 0.0049967414455640916; 0.296434; 0; 9.32139; 2; 0.332231; 1; 6; 0.02028; 0.666667; 
+.
+geometric_RRT_gb0.05_r0.2
+8 common properties
+goal_bias = 0.05
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 0.2
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 118; 119; 18.4531; 0.0041942542530370164; 0.131375; 0; 5.31204; 27; 764.444; 1; 6; 0.06359; 0.929134; 
+.
+geometric_RRT_gb0.05_r0.4
+8 common properties
+goal_bias = 0.05
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 0.4
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 202; 203; 18.4531; 0.025185757824045168; 0.151023; 0; 5.74317; 15; 75.8333; 1; 6; 0.165685; 0.914027; 
+.
+geometric_RRT_gb0.05_r1.0
+8 common properties
+goal_bias = 0.05
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 1
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 87; 88; 18.4688; 0.013573703581397294; 0.169791; 0; 5.60628; 6; 7.92261; 1; 6; 0.179834; 0.783784; 
+.
+geometric_RRT_gb0.05_r2.5
+8 common properties
+goal_bias = 0.05
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 2.5
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 25; 26; 18.4688; 0.034260097818447341; 0.256642; 0; 3.8814; 2; 0.722084; 1; 6; 0.122525; 0.833333; 
+.
+geometric_RRT_gb0.01_r1.0
+8 common properties
+goal_bias = 0.01
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 1
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 171; 172; 18.4688; 0.062927647618870916; 0.223973; 0; 10.6103; 11; 19.6472; 1; 6; 0.371369; 0.834146; 
+.
+geometric_RRT_gb0.2_r1.0
+8 common properties
+goal_bias = 0.2
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 1
+valid_segment_count_factor = 1
+16 properties for each run
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 1; 1; 25; 26; 18.4688; 0.017171941373344046; 0.225819; 0; 5.09359; 6; 5.73778; 1; 6; 0.053946; 0.78125; 
+.
+geometric_RRTConnect_r0.2
+7 common properties
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 0.2
+valid_segment_count_factor = 1
+17 properties for each run
+approx goal distance REAL
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 0; 1; 1; 92; 93; 18.4688; 0.010167989316049959; 0.21652; 0; 5.45658; 28; 525.729; 1; 6; 0.0567; 0.64539; 
+.
+geometric_RRTConnect_r0.4
+7 common properties
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 0.4
+valid_segment_count_factor = 1
+17 properties for each run
+approx goal distance REAL
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 0; 1; 1; 40; 41; 18.4688; 0.0098588283298652463; 0.132176; 0; 5.87817; 15; 106.635; 1; 6; 0.038917; 0.684211; 
+.
+geometric_RRTConnect_r1.0
+7 common properties
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 1
+valid_segment_count_factor = 1
+17 properties for each run
+approx goal distance REAL
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 0; 1; 1; 11; 12; 18.4688; 0.15802539934069221; 0.24206; 0; 5.54883; 6; 10.703; 1; 6; 0.021476; 0.714286; 
+.
+geometric_RRTConnect_r2.5
+7 common properties
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 2.5
+valid_segment_count_factor = 1
+17 properties for each run
+approx goal distance REAL
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 0; 1; 1; 5; 6; 18.4688; 0.044192094385534134; 0.178434; 0; 5.25777; 3; 2.29232; 1; 6; 0.01769; 0.8; 
+.
+geometric_RRTConnect_r5.0
+7 common properties
+intermediate_states = 0
+longest_valid_segment_fraction = 0.005
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+range = 5
+valid_segment_count_factor = 1
+17 properties for each run
+approx goal distance REAL
+approximate solution BOOLEAN
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+graph motions INTEGER
+graph states INTEGER
+memory REAL
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 0; 1; 1; 3; 4; 18.4688; 0.017590701553754438; 0.273467; 0; 8.27834; 2; 0.363363; 1; 6; 0.018397; 1; 
+.
+geometric_PRM_k5
+6 common properties
+longest_valid_segment_fraction = 0.005
+max_nearest_neighbors = 5
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+20 properties for each run
+approximate solution BOOLEAN
+best cost REAL
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+edge count INTEGER
+graph motions INTEGER
+graph states INTEGER
+iterations INTEGER
+memory REAL
+milestone count INTEGER
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 7.892132; 1; 1; 11; 22; 6; 4; 18.4688; 6; 0.060796680500537922; 0.237204; 0; 7.89213; 2; 0.446791; 1; 6; 0.127778; 0.733333; 
+5 progress properties for each run
+best cost REAL
+edge count INTEGER
+iterations INTEGER
+milestone count INTEGER
+time REAL
+1 runs
+inf,5,3,5,0.052237,;7.892132,9,4,6,0.107278,;
+.
+geometric_PRM_k10
+6 common properties
+longest_valid_segment_fraction = 0.005
+max_nearest_neighbors = 10
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+20 properties for each run
+approximate solution BOOLEAN
+best cost REAL
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+edge count INTEGER
+graph motions INTEGER
+graph states INTEGER
+iterations INTEGER
+memory REAL
+milestone count INTEGER
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 7.015276; 1; 1; 5; 10; 4; 2; 18.4688; 4; 0.011923731859069486; 0.273363; 0; 7.01528; 2; 0.479049; 1; 6; 0.048969; 0.833333; 
+5 progress properties for each run
+best cost REAL
+edge count INTEGER
+iterations INTEGER
+milestone count INTEGER
+time REAL
+1 runs
+
+.
+geometric_PRM_k20
+6 common properties
+longest_valid_segment_fraction = 0.005
+max_nearest_neighbors = 20
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+20 properties for each run
+approximate solution BOOLEAN
+best cost REAL
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+edge count INTEGER
+graph motions INTEGER
+graph states INTEGER
+iterations INTEGER
+memory REAL
+milestone count INTEGER
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 7.526269; 1; 1; 5; 10; 5; 3; 18.4688; 5; 0.073031019479202083; 0.275528; 0; 7.52627; 2; 0.417862; 1; 6; 0.046484; 0.5; 
+5 progress properties for each run
+best cost REAL
+edge count INTEGER
+iterations INTEGER
+milestone count INTEGER
+time REAL
+1 runs
+
+.
+geometric_PRM_k40
+6 common properties
+longest_valid_segment_fraction = 0.005
+max_nearest_neighbors = 40
+projection.cellsize.0 = 0.0767879
+projection.cellsize.1 = 0.0741243
+projection.cellsize_factor = 0
+valid_segment_count_factor = 1
+20 properties for each run
+approximate solution BOOLEAN
+best cost REAL
+correct solution BOOLEAN
+correct solution strict BOOLEAN
+edge count INTEGER
+graph motions INTEGER
+graph states INTEGER
+iterations INTEGER
+memory REAL
+milestone count INTEGER
+minimum clearance REAL
+solution clearance REAL
+solution difference REAL
+solution length REAL
+solution segments INTEGER
+solution smoothness REAL
+solved BOOLEAN
+status ENUM
+time REAL
+valid segment fraction REAL
+1 runs
+0; 8.676494; 1; 1; 9; 18; 6; 4; 18.4688; 6; 0.21131622385790502; 0.279705; 0; 8.67649; 2; 0.348216; 1; 6; 0.096882; 0.6; 
+5 progress properties for each run
+best cost REAL
+edge count INTEGER
+iterations INTEGER
+milestone count INTEGER
+time REAL
+1 runs
+inf,4,3,5,0.050873,;
+.

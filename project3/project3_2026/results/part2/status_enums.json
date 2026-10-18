@@ -1,0 +1,12 @@
+{
+  "0": "Unknown status",
+  "1": "Invalid start",
+  "2": "Invalid goal",
+  "3": "Unrecognized goal type",
+  "4": "Timeout",
+  "5": "Approximate solution",
+  "6": "Exact solution",
+  "7": "Crash",
+  "8": "Unknown status",
+  "9": "Unknown status"
+}

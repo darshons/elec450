@@ -1,0 +1,5 @@
+Info:    RRT: Starting planning with 1 states already in datastructure
+Info:    ProblemDefinition: Adding approximate solution from planner RRT
+Info:    RRT: Created 2491 states
+Info:    Solution found in 5.017705 seconds
+RRT: approximate, 5.0179 s, 2 waypoints; saved results/part2/paths/RRT_seed18104.json

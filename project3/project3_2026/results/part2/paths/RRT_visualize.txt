@@ -1,0 +1,13 @@
+Info:    RRT: Starting planning with 1 states already in datastructure
+Info:    RRT: Created 41 states
+Info:    Solution found in 0.095161 seconds
+RRT: exact, 0.0952 s, 5 waypoints; saved results/part2/paths/RRT.json
+╭────── viser (listening *:8211) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8211   │
+│   Websocket │ ws://localhost:8211     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+(viser) Connection opened (0, 1 total), 131 persistent messages
+Path viewer: http://localhost:8211 (Ctrl+C to stop)
+(viser) Connection closed (0, 0 total)

@@ -24,6 +24,14 @@ nanobind_add_module(project3_cpp
   src/RTP.cpp)
 target_include_directories(project3_cpp PRIVATE provided src)
 target_link_libraries(project3_cpp PRIVATE ompl::ompl)
+# On macOS, hidden OMPL RTTI in the extension prevents RTP's dynamic_cast to
+# GoalSampleableRegion from recognizing goals created by the OMPL dylib.
+# Keep that type information visible; leave the Linux build settings unchanged.
+if(APPLE)
+  set_target_properties(project3_cpp PROPERTIES
+    CXX_VISIBILITY_PRESET default
+    VISIBILITY_INLINES_HIDDEN OFF)
+endif()
 set_target_properties(project3_cpp PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
   RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
