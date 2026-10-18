@@ -1,0 +1,139 @@
+{
+  "runs": 500,
+  "status_counts": {
+    "Approximate solution": 22,
+    "Exact solution": 478
+  },
+  "winners": {
+    "RTP": {
+      "time": {
+        "config": "RTP_gb0.5",
+        "exact": 25,
+        "runs": 25,
+        "time_median": 0.040294
+      },
+      "solution_length": {
+        "config": "RTP_gb0.5",
+        "exact": 25,
+        "runs": 25,
+        "solution_length_median": 9.38837
+      },
+      "solution_smoothness": {
+        "config": "RTP_gb0.5",
+        "exact": 25,
+        "runs": 25,
+        "solution_smoothness_median": 0.477679
+      },
+      "minimum_clearance": {
+        "config": "RTP_gb0.05",
+        "exact": 25,
+        "runs": 25,
+        "minimum_clearance_median": 0.10568759880228745
+      }
+    },
+    "RRT": {
+      "time": {
+        "config": "RRT_gb0.05_r1.0",
+        "exact": 24,
+        "runs": 25,
+        "time_median": 0.09883
+      },
+      "solution_length": {
+        "config": "RRT_gb0.05_r1.0",
+        "exact": 24,
+        "runs": 25,
+        "solution_length_median": 4.117045
+      },
+      "solution_smoothness": {
+        "config": "RRT_gb0.05_r2.5",
+        "exact": 25,
+        "runs": 25,
+        "solution_smoothness_median": 2.03235
+      },
+      "minimum_clearance": {
+        "config": "RRT_gb0.05_r2.5",
+        "exact": 25,
+        "runs": 25,
+        "minimum_clearance_median": 0.06669609898768003
+      }
+    },
+    "RRTConnect": {
+      "time": {
+        "config": "RRTConnect_r2.5",
+        "exact": 25,
+        "runs": 25,
+        "time_median": 0.018928
+      },
+      "solution_length": {
+        "config": "RRTConnect_r0.2",
+        "exact": 25,
+        "runs": 25,
+        "solution_length_median": 4.11413
+      },
+      "solution_smoothness": {
+        "config": "RRTConnect_r5.0",
+        "exact": 25,
+        "runs": 25,
+        "solution_smoothness_median": 0.583254
+      },
+      "minimum_clearance": {
+        "config": "RRTConnect_r2.5",
+        "exact": 25,
+        "runs": 25,
+        "minimum_clearance_median": 0.0883492270194436
+      }
+    },
+    "PRM": {
+      "time": {
+        "config": "PRM_k10",
+        "exact": 25,
+        "runs": 25,
+        "time_median": 0.057708
+      },
+      "solution_length": {
+        "config": "PRM_k5",
+        "exact": 25,
+        "runs": 25,
+        "solution_length_median": 8.45454
+      },
+      "solution_smoothness": {
+        "config": "PRM_k10",
+        "exact": 25,
+        "runs": 25,
+        "solution_smoothness_median": 0.400244
+      },
+      "minimum_clearance": {
+        "config": "PRM_k5",
+        "exact": 25,
+        "runs": 25,
+        "minimum_clearance_median": 0.09054413873325694
+      }
+    },
+    "all": {
+      "time": {
+        "config": "RRTConnect_r2.5",
+        "exact": 25,
+        "runs": 25,
+        "time_median": 0.018928
+      },
+      "solution_length": {
+        "config": "RRTConnect_r0.2",
+        "exact": 25,
+        "runs": 25,
+        "solution_length_median": 4.11413
+      },
+      "solution_smoothness": {
+        "config": "PRM_k10",
+        "exact": 25,
+        "runs": 25,
+        "solution_smoothness_median": 0.400244
+      },
+      "minimum_clearance": {
+        "config": "RTP_gb0.05",
+        "exact": 25,
+        "runs": 25,
+        "minimum_clearance_median": 0.10568759880228745
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+Info:    RRTConnect: Starting planning with 1 states already in datastructure
+Info:    RRTConnect: Created 5 states (3 start + 2 goal)
+Info:    Solution found in 0.006384 seconds
+RRTConnect: exact, 0.0064 s, 4 waypoints; saved results/part2/paths/RRTConnect_seed18101.json

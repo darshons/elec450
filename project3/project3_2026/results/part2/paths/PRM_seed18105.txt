@@ -1,0 +1,4 @@
+Info:    PRM: Starting planning with 2 states already in datastructure
+Info:    PRM: Created 4 states
+Info:    Solution found in 0.153933 seconds
+PRM: exact, 0.1540 s, 3 waypoints; saved results/part2/paths/PRM_seed18105.json

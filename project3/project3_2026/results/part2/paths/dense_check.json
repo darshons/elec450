@@ -1,0 +1,26 @@
+[
+  {
+    "planner": "RTP",
+    "recorded_min_clearance_m": 0.08892041197000719,
+    "dense_sampled_min_clearance_m": 0.08883895626519515,
+    "step_rad": 0.002
+  },
+  {
+    "planner": "RRT",
+    "recorded_min_clearance_m": 0.0036434927483325608,
+    "dense_sampled_min_clearance_m": 0.0031992123094731224,
+    "step_rad": 0.002
+  },
+  {
+    "planner": "RRTConnect",
+    "recorded_min_clearance_m": 0.0812825340675081,
+    "dense_sampled_min_clearance_m": 0.0806178509438426,
+    "step_rad": 0.002
+  },
+  {
+    "planner": "PRM",
+    "recorded_min_clearance_m": 0.08981945894798225,
+    "dense_sampled_min_clearance_m": 0.08981777796248577,
+    "step_rad": 0.002
+  }
+]

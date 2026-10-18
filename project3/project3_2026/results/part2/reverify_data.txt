@@ -1,0 +1,10 @@
+test_all_exported_summary_numbers_and_raw_rows (__main__.Part2Audit.test_all_exported_summary_numbers_and_raw_rows) ... ok
+test_matrix_statuses_sources_and_strict_checks (__main__.Part2Audit.test_matrix_statuses_sources_and_strict_checks) ... ok
+test_native_log_reconversion_and_canonical_copy (__main__.Part2Audit.test_native_log_reconversion_and_canonical_copy) ... ok
+test_report_table_and_every_metric_winner (__main__.Part2Audit.test_report_table_and_every_metric_winner) ... ok
+test_representative_selection_and_independent_path_metrics (__main__.Part2Audit.test_representative_selection_and_independent_path_metrics) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.841s
+
+OK

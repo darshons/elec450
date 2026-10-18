@@ -1,4 +1,4 @@
-"""Read-only audit of saved paths, scenes, benchmark databases and report numbers.
+"""Read-only audit of Part 1 and archived October 14 benchmark/report numbers.
 
 Run with the course environment: python -B tests/check_review.py
 Optional: --native-dir DIRECTORY --smoke checks a separately built extension.
@@ -152,7 +152,8 @@ def audit_artifacts():
     for name, tag, scene_name, limit in (("benchmark.db", "main", "clutter", 5),
             ("benchmark_t1.db", "t1", "clutter", 1), ("benchmark_t20.db", "t20", "clutter", 20),
             ("benchmark_shelf.db", "shelf", "shelf", 5)):
-        connection = sqlite3.connect((ROOT / "results" / name).as_uri() + "?mode=ro", uri=True)
+        directory = ROOT / "results" / "legacy_2026-10-14" if tag == "main" else ROOT / "results"
+        connection = sqlite3.connect((directory / name).as_uri() + "?mode=ro", uri=True)
         connection.row_factory = sqlite3.Row
         assert connection.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         experiments = list(connection.execute("SELECT * FROM experiments"))
@@ -182,7 +183,7 @@ def audit_artifacts():
             grouped[run["name"].removeprefix("geometric_")].append(run)
             assert bool(run["solved"]) == (run["status"] == 6)
         assert set(grouped) == set(settings)
-        summary = list(csv.DictReader((ROOT / f"results/summary_{tag}.csv").open()))
+        summary = list(csv.DictReader((directory / f"summary_{tag}.csv").open()))
         assert len(summary) == 20
         for row in summary:
             records = grouped[row["config"]]
@@ -209,7 +210,7 @@ def audit_artifacts():
             report["best_main_settings"][planner][metric] = dict(config=winner["config"],
                 median=float(winner[metric + "_median"]), exact=int(winner["exact"]))
     # The existing 20-row comparison table is retained; audit every displayed number.
-    tex = (ROOT / "report/project3_report.tex").read_text()
+    tex = (ROOT / "results/legacy_2026-10-14/project3_report.tex").read_text()
     table_settings = set()
     for line in tex.splitlines():
         if not re.match(r"^(RTP gb|RRT gb|RRT-Connect r|PRM k)", line):

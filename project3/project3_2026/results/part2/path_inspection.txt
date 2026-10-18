@@ -1,0 +1,266 @@
+╭────── viser (listening *:8230) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8230   │
+│   Websocket │ ws://localhost:8230     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+/Users/winson/Documents/Projects/darshon_winson_450/project3/project3_2026/inspect_part2_paths.py:109: DeprecationWarning: `control_layout` is deprecated; use `main_panel` placement instead, e.g. `server.gui.main_panel.dock_right()`. Both "collapsible" and "fixed" now dock the control panel to the right edge.
+  viz.server.gui.configure_theme(control_layout='collapsible', show_logo=False)
+(viser) Connection opened (0, 1 total), 532 persistent messages
+(viser) Connection closed (0, 0 total)
+(viser) Server stopped
+╭────── viser (listening *:8231) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8231   │
+│   Websocket │ ws://localhost:8231     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+(viser) Connection opened (0, 1 total), 659 persistent messages
+(viser) Connection closed (0, 0 total)
+(viser) Server stopped
+╭────── viser (listening *:8232) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8232   │
+│   Websocket │ ws://localhost:8232     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+(viser) Connection opened (0, 1 total), 659 persistent messages
+(viser) Connection closed (0, 0 total)
+(viser) Server stopped
+╭────── viser (listening *:8233) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8233   │
+│   Websocket │ ws://localhost:8233     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+(viser) Connection opened (0, 1 total), 405 persistent messages
+(viser) Connection closed (0, 0 total)
+(viser) Server stopped
+[
+  {
+    "planner": "RTP",
+    "options": [
+      "--goal-bias",
+      ".2"
+    ],
+    "candidates": [
+      {
+        "seed": 18101,
+        "file": "results/part2/paths/RTP_seed18101.json",
+        "status": "exact",
+        "length": 19.898913240749092,
+        "time": 0.112909083
+      },
+      {
+        "seed": 18102,
+        "file": "results/part2/paths/RTP_seed18102.json",
+        "status": "exact",
+        "length": 13.78131217853075,
+        "time": 0.049171583
+      },
+      {
+        "seed": 18103,
+        "file": "results/part2/paths/RTP_seed18103.json",
+        "status": "exact",
+        "length": 11.980838953459275,
+        "time": 0.034053459
+      },
+      {
+        "seed": 18104,
+        "file": "results/part2/paths/RTP_seed18104.json",
+        "status": "exact",
+        "length": 16.727733120786475,
+        "time": 0.046550541
+      },
+      {
+        "seed": 18105,
+        "file": "results/part2/paths/RTP_seed18105.json",
+        "status": "exact",
+        "length": 7.883935646890247,
+        "time": 0.090507
+      }
+    ],
+    "chosen_seed": 18102,
+    "candidate_exact": 5,
+    "benchmark_query1_median_length": 13.9776,
+    "selection": "Exact candidate closest to benchmark query1 median length among five prespecified seeds",
+    "playback_inspected": true,
+    "saved": "results/part2/paths/RTP.json",
+    "metrics": {
+      "length": 13.78131217853075,
+      "smoothness": 0.45834227980797604,
+      "min_clearance": 0.08892041197000719,
+      "planning_time": 0.06880825
+    }
+  },
+  {
+    "planner": "RRT",
+    "options": [
+      "--goal-bias",
+      ".05",
+      "--range",
+      "1"
+    ],
+    "candidates": [
+      {
+        "seed": 18101,
+        "file": "results/part2/paths/RRT_seed18101.json",
+        "status": "approximate",
+        "length": null,
+        "time": 5.040986375
+      },
+      {
+        "seed": 18102,
+        "file": "results/part2/paths/RRT_seed18102.json",
+        "status": "exact",
+        "length": 3.7194848229710185,
+        "time": 0.080354125
+      },
+      {
+        "seed": 18103,
+        "file": "results/part2/paths/RRT_seed18103.json",
+        "status": "exact",
+        "length": 14.42327018077928,
+        "time": 5.01273525
+      },
+      {
+        "seed": 18104,
+        "file": "results/part2/paths/RRT_seed18104.json",
+        "status": "approximate",
+        "length": null,
+        "time": 5.01794725
+      },
+      {
+        "seed": 18105,
+        "file": "results/part2/paths/RRT_seed18105.json",
+        "status": "exact",
+        "length": 12.333501265405403,
+        "time": 1.647589416
+      }
+    ],
+    "chosen_seed": 18102,
+    "candidate_exact": 3,
+    "benchmark_query1_median_length": 5.53177,
+    "selection": "Exact candidate closest to benchmark query1 median length among five prespecified seeds",
+    "playback_inspected": true,
+    "saved": "results/part2/paths/RRT.json",
+    "metrics": {
+      "length": 3.7194848229710185,
+      "smoothness": 11.282824393153094,
+      "min_clearance": 0.0036434927483325608,
+      "planning_time": 0.095175708
+    }
+  },
+  {
+    "planner": "RRTConnect",
+    "options": [
+      "--range",
+      "1"
+    ],
+    "candidates": [
+      {
+        "seed": 18101,
+        "file": "results/part2/paths/RRTConnect_seed18101.json",
+        "status": "exact",
+        "length": 2.5880729808333913,
+        "time": 0.00639375
+      },
+      {
+        "seed": 18102,
+        "file": "results/part2/paths/RRTConnect_seed18102.json",
+        "status": "exact",
+        "length": 3.6277211894444474,
+        "time": 0.011418
+      },
+      {
+        "seed": 18103,
+        "file": "results/part2/paths/RRTConnect_seed18103.json",
+        "status": "exact",
+        "length": 3.1404857766371683,
+        "time": 0.010147041
+      },
+      {
+        "seed": 18104,
+        "file": "results/part2/paths/RRTConnect_seed18104.json",
+        "status": "exact",
+        "length": 2.7952817614059655,
+        "time": 0.008834792
+      },
+      {
+        "seed": 18105,
+        "file": "results/part2/paths/RRTConnect_seed18105.json",
+        "status": "exact",
+        "length": 3.026067100430754,
+        "time": 0.021270791
+      }
+    ],
+    "chosen_seed": 18102,
+    "candidate_exact": 5,
+    "benchmark_query1_median_length": 3.42479,
+    "selection": "Exact candidate closest to benchmark query1 median length among five prespecified seeds",
+    "playback_inspected": true,
+    "saved": "results/part2/paths/RRTConnect.json",
+    "metrics": {
+      "length": 3.6277211894444474,
+      "smoothness": 7.914216981404272,
+      "min_clearance": 0.0812825340675081,
+      "planning_time": 0.0127185
+    }
+  },
+  {
+    "planner": "PRM",
+    "options": [
+      "--max-neighbors",
+      "10"
+    ],
+    "candidates": [
+      {
+        "seed": 18101,
+        "file": "results/part2/paths/PRM_seed18101.json",
+        "status": "exact",
+        "length": 4.29519348586428,
+        "time": 0.033970916
+      },
+      {
+        "seed": 18102,
+        "file": "results/part2/paths/PRM_seed18102.json",
+        "status": "exact",
+        "length": 14.53555758328007,
+        "time": 0.090002291
+      },
+      {
+        "seed": 18103,
+        "file": "results/part2/paths/PRM_seed18103.json",
+        "status": "exact",
+        "length": 6.526019396174738,
+        "time": 0.105730667
+      },
+      {
+        "seed": 18104,
+        "file": "results/part2/paths/PRM_seed18104.json",
+        "status": "exact",
+        "length": 7.71084227209423,
+        "time": 0.047624708
+      },
+      {
+        "seed": 18105,
+        "file": "results/part2/paths/PRM_seed18105.json",
+        "status": "exact",
+        "length": 11.54520210953905,
+        "time": 0.15395425
+      }
+    ],
+    "chosen_seed": 18105,
+    "candidate_exact": 5,
+    "benchmark_query1_median_length": 9.74353,
+    "selection": "Exact candidate closest to benchmark query1 median length among five prespecified seeds",
+    "playback_inspected": true,
+    "saved": "results/part2/paths/PRM.json",
+    "metrics": {
+      "length": 11.54520210953905,
+      "smoothness": 0.24454417520935384,
+      "min_clearance": 0.08981945894798225,
+      "planning_time": 0.137980209
+    }
+  }
+]

@@ -1,0 +1,4 @@
+Info:    RRT: Starting planning with 1 states already in datastructure
+Info:    RRT: Created 813 states
+Info:    Solution found in 1.647500 seconds
+RRT: exact, 1.6476 s, 14 waypoints; saved results/part2/paths/RRT_seed18105.json

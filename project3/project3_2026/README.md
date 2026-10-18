@@ -1,228 +1,247 @@
-# COMP/ELEC/MECH 450/550 - Project 3 (2026)
+# COMP/ELEC/MECH 450/550 — Project 3
 
-Implement the Random Tree Planner (RTP) in C++ and plan motions for the seven-joint Panda arm from Project 2. Compare RTP with OMPL's RRT, RRT-Connect, and PRM, and visualize the paths in Viser.
+Darshon Singh (`ds161`) and Winson Lin (`wl85`). The assignment is
+[`pdf/project3_2026.pdf`](pdf/project3_2026.pdf).
+The complete 1–5 page report is [`pdf/project3_report.pdf`](pdf/project3_report.pdf),
+with source in `report/project3_report.tex`. Part 1's report, custom scenes,
+paths, and images are preserved.
 
-The assignment is in [`pdf/project3_2026.pdf`](pdf/project3_2026.pdf), with editable LaTeX in [`src/project3_2026.tex`](src/project3_2026.tex). Part 1 (Exercises 1 and 2) is due **October 15, 2026**. Part 2 (Exercise 3) is due **October 20, 2026**.
+## Work split and target dates
 
-## 1. Activate and build
+Darshon handles RTP implementation and analysis; Winson handles custom environments,
+visualization and benchmark experiments. Testing and report/submission preparation are shared.
 
-Use your Project 2 environment:
+| Task | Responsibility | Target |
+| --- | --- | --- |
+| RTP implementation | Darshon: C++ tree construction, path extraction, debugging and memory management | Oct 13 |
+| Custom environments | Winson: two scenes, valid start/goal queries, Viser screenshots and saved paths | Oct 13 |
+| Part 1 submission | Both: test RTP in both scenes, finish the short write-up and package code | Oct 13 |
+| Benchmark experiments | Winson: configure the four planners with at least three settings each, run trials and collect results | Oct 17 |
+| Results analysis | Darshon: compare all metrics and success rates, and explain algorithm differences | Oct 18 |
+| Final report and submission | Both: combine results, figures and explanations; finalize code and submission | Oct 18 |
+
+These are internal targets in 2026. Official deadlines are October 15 for
+Part 1 and October 20 for Part 2. The final report follows this confirmed split;
+the original Part 1 submission remains preserved.
+
+## Build and check
+
+Use the course environment and the bundled visualization package:
 
 ```bash
 micromamba activate ompl_env
 cd project3_2026
 make
+python tests/check_support.py
+python tests/check_benchmark.py
+python tests/check_part2.py
+python -m cmake -S tests/rtp_lifecycle -B /tmp/project3_lifecycle \
+  -DCMAKE_PREFIX_PATH="$CONDA_PREFIX"
+python -m cmake --build /tmp/project3_lifecycle
+/tmp/project3_lifecycle/check_rtp_lifecycle
 ```
 
-Run `make` after each C++ edit, then restart the Python program. The reviewed implementation uses OMPL 2.0.2 and Python 3.12. On Linux, create an environment if you do not already have the Project 2 environment:
+The October 18 build used macOS ARM64, Python 3.12.12, OMPL 2.0.2,
+AppleClang 17 and Release mode. Full versions and source hashes are in
+`results/part2/environment.json`. The existing Apple-only symbol-visibility
+fix in CMake is retained; Linux flags and RTP sources are unchanged.
+Earlier Linux ARM64 checks are documented in `review/README.md`.
+
+If recreating the course environment on Linux:
 
 ```bash
 micromamba create -n ompl_env -c conda-forge python=3.12 ompl=2.0.2 cxx-compiler cmake ninja
 micromamba activate ompl_env
 python -m pip install cmake nanobind matplotlib -e ./visualization/viser-motion-planning
 make
+command -v ompl_benchmark_statistics.py
 ```
 
-Install the bundled visualization package even if you have a different Project 2 checkout installed. Its dependencies include NumPy, SciPy, PyYAML, Viser, trimesh and yourdfpy. The benchmark converter `ompl_benchmark_statistics.py` must be on `PATH` (provided by the OMPL environment). Check it with `command -v ompl_benchmark_statistics.py`.
+Rebuild after C++ edits and restart Python. The lifecycle check covers 25
+clear/reuse cycles, exact/approximate solutions, continued solving, trivial
+and invalid starts, exported tree labels/edges, independent solution-path
+ownership, and balanced state allocations. RTP uniformly selects a stored
+vertex, uses goal-biased sampling and checks the full connection. It has no
+nearest-neighbor selection, range-limited extension, rewiring, or intermediate
+edge states stored as vertices. No RTP fix was needed for Part 2.
 
-The Docker scripts in `../docker/` are historical helpers tied to the original author's Linux paths and `/tmp/p3` setup. They are not required by the commands here and are not portable as written. The October 14 review built isolated copies on macOS and Ubuntu 24.04 ARM64. An Apple-only CMake visibility fix restored goal sampling through the Python extension; RTP and collision-checking C++ sources are unchanged. A fresh Ubuntu 24.04 ARM64 build with OMPL 2.0.2 also passed the support checks, benchmark-conversion checks, RTP lifecycle checks, and all four custom-scene binding smoke cases.
+## Part 2 experiments
 
-## 2. Run the supplied planner
+`configs/planners.json` contains 20 settings, all with a 5 s limit and
+resolution 0.005:
 
-RTP and the three OMPL planners are implemented in this checkout. For a single RRT-Connect trial:
-
-```bash
-python plan_arm.py --planner RRTConnect --output results/path.json --visualize
-```
-
-Each **query** specifies a different **start/goal pair** in the same scene. For example, `--query query2` uses the start and goal stored under `query2` in the scene YAML; the obstacles stay the same. The supplied scenes contain `query1` through `query5`; omitting `--query` selects `query1`.
-
-Use **`--seed`** to change the planner's random samples. The default seed is `1`, and the seed is recorded in the saved result. For example:
-
-```bash
-python plan_arm.py --planner RRTConnect --query query2 --seed 42 \
-  --output results/path.json --visualize
-```
-
-Open **http://localhost:8080**. Use the playback slider or play control to inspect the arm's motion. The result file records the scene, start and goal, joint order, planner settings, random seed, solution status, and path.
-
-Replay the saved result later:
-
-```bash
-python visualize_path.py results/path.json
-```
-
-Replay uses the supplied Panda assets and Python visualization package. It does not need the compiled planner extension.
-
-## 3. RTP implementation
-
-The student implementation is in [`src/RTP.h`](src/RTP.h) and [`src/RTP.cpp`](src/RTP.cpp), including `solve()`, `clear()`, `getPlannerData()`, and state ownership. The setter exposes the goal-bias parameter.
-
-RTP selects an existing tree vertex uniformly at random, samples a target with goal bias, checks the full connecting motion, and adds the target when that motion is valid. Recover a solution using parent pointers. If time expires, return the path to the closest tree vertex as an approximate solution.
-
-Use OMPL's state-space, validity, and goal interfaces. The planner should work independently of the robot's geometry. The original starter RTP returned `timeout`; that placeholder has been replaced.
-
-```bash
-make
-python plan_arm.py --planner RTP --goal-bias 0.1 --time-limit 5 \
-  --output results/rtp_path.json --visualize
-```
-
-The binding and scene support are provided. Students implement the planning algorithm in C++.
-
-## 4. Create arm scenes
-
-The seven-joint Panda arm is used in all three exercises. Its configuration is a vector of seven joint angles in radians. The configuration space is the product of the seven bounded joint intervals from the URDF, represented by OMPL's `RealVectorStateSpace(7)`. The base and gripper are fixed.
-
-For Exercise 2, create **two custom 3D scenes** with sphere and oriented-box obstacles. Copy a scene from [`resources/scenes/`](resources/scenes/) and edit its obstacles and queries. Choose valid start and goal arm configurations whose direct joint-space connection collides with an obstacle.
-
-Run your C++ RTP planner in both scenes and visualize the arm's motion in **Viser**. Include images of the scenes, start and goal configurations, and solution paths in your report. Submit the scene files and saved paths.
-
-```bash
-python plan_arm.py --scene resources/scenes/shelf.yaml --query query1 \
-  --planner RRTConnect --output results/shelf_path.json --visualize
-```
-
-Scene conventions match Project 2:
-
-- Positions, radii, and box half-extents are in meters.
-- Obstacle quaternions use `[x, y, z, w]` order.
-- Configurations contain seven angles in radians, from `panda_joint1` through `panda_joint7`.
-- Joint limits come from the Panda URDF; the base and gripper are fixed.
-- Collision checking uses all 59 robot spheres against environment spheres and oriented boxes. Self-collision is outside this assignment's model.
-
-The supplied C++ forward kinematics and Project 2 collision checker run inside each planning call. OMPL checks edges at resolution `0.005` times the configuration space's maximum extent. Keep that resolution fixed in your comparison. Viser playback interpolates the geometric joint path for display; it does not assign robot velocity or acceleration limits.
-
-## 5. Run experiments
-
-The existing [`configs/planners.json`](configs/planners.json) contains 20 settings and already exceeds the three-per-planner minimum. The four supplied databases each have 500 trials; no rerun is needed to fill the required experiment matrix.
-
-| Planner | Parameters |
+| Planner | Settings |
 | --- | --- |
-| RTP | `goal_bias`, `time_limit` |
-| RRT | `goal_bias`, `planner_range`, `time_limit` |
-| RRTConnect | `planner_range`, `time_limit` |
-| PRM | `max_neighbors`, `time_limit` |
+| RTP | goal bias .01, .05, .1, .2, .5 |
+| RRT | bias .05 at ranges .2, .4, 1, 2.5; biases .01, .2 at range 1 |
+| RRT-Connect | ranges .2, .4, 1, 2.5, 5 |
+| PRM | maximum neighbors 5, 10, 20, 40 |
 
-For a deliberate new experiment, run five trials on each of the five queries into a new directory:
+Bias is a probability; range is Euclidean joint-space distance in radians;
+maximum neighbors is a count. The RRT design isolates range at fixed bias
+and bias at fixed range. Ranges span fine extensions to a substantial fraction
+of the 13.4165 rad joint-box diagonal. PRM settings span sparse to denser local
+connectivity. These are exploratory settings, not claimed optima.
+
+A separate 100-run pilot (one trial per setting/query, 1 s, seed 18001) gave
+86 exact and 14 approximate solutions. We chose 5 s for the final sequential
+study to give harder settings longer while keeping the experiment practical.
+The final study has **500 runs**: 20 settings × 5 clutter queries × 5 trials,
+seed 18002. Pilot and historical runs are excluded from its summaries.
+
+Reproduce into new directories, with no other timed jobs running:
 
 ```bash
-python benchmark.py --scene resources/scenes/clutter.yaml \
-  --repetitions 5 --output review_runs/benchmark.db
+python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 1 \
+  --time-limit 1 --seed 18001 --output results/reproduction_pilot/benchmark.db
+python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 5 \
+  --seed 18002 --output results/reproduction/benchmark.db
+python analyze_part2.py --db results/reproduction/benchmark.db --out results/reproduction \
+  --fig-dir results/reproduction/fig
 ```
 
-Upload **`results/benchmark.db`** on the **Change database** page of [Planner Arena](https://planner-arena.kavrakilab.rice.edu/). Use its plots to compare planners and download figures for your report.
+The supplied runner replaces an existing output database and matching log
+files. Use new paths for new experiments. The final canonical database is
+`results/benchmark.db`; an identical copy and the original native logs are in
+`results/part2/`. The OMPL converter produces the database directly from those
+logs. To reconstruct it without rerunning planning:
 
-The C++ code uses `ompl::tools::Benchmark`; OMPL runs the repetitions and calls each planner's `clear()` between trials. Its `ompl_benchmark_statistics.py` tool converts the native logs into the database. New native logs are written beside the output database in a `<database_stem>_logs/` folder. The committed experiments' original native logs are missing from this checkout; only their converted per-run databases are available. Running the command again replaces the destination database. Use a new output directory to preserve existing results. Compare equal time limits first.
+```bash
+ompl_benchmark_statistics.py -d /tmp/project3_reconverted.db \
+  results/part2/benchmark_logs/*.log
+```
 
-| Quantity | Definition |
+The canonical analysis command is:
+
+```bash
+python analyze_part2.py
+```
+
+It audits the database, query endpoints, actual planner parameters, resolution,
+status enums, and all 100 setting/query groups; exports `runs.csv`,
+`summary.csv`, `per_query.csv`, `schema.sql`, `experiments.json`, and
+`winners.json` into `results/part2/`; and makes `fig/part2_*.pdf` and the
+report table. Generated figures refer to the database supplied to this command.
+The supplemental `fig/part2_parameter_effects.pdf` shows medians and interquartile
+ranges for all settings and metrics. Legacy `bench_main_*` and
+`bench_review_*` figures describe the archived October 14 data.
+See `results/part2/README.md` for the data dictionary.
+
+| Quantity | Definition and analysis |
 | --- | --- |
-| Planning time | Seconds spent in `solve()`, including collision checking |
-| Path length | Sum of Euclidean joint-space edge lengths, in radians |
-| Smoothness | OMPL `PathGeometric::smoothness()` on the raw waypoints; lower is smoother under this metric |
-| Minimum clearance | Minimum robot-sphere surface distance to an obstacle over sampled path edges, in meters |
+| Solve time | OMPL `runs.time`, seconds including collision checking; all runs, actual measured timeout overhead retained |
+| Length | Raw path's summed Euclidean joint-space edge lengths, radians; exact solutions only |
+| Smoothness | Raw `PathGeometric::smoothness()`, lower is smoother under this geometric metric; exact only |
+| Minimum clearance | Custom `minimum_clearance`, minimum sampled robot-sphere surface separation along edges, meters; exact only |
+| Success | Exact count and percentage of 25 runs per setting, and of 5 per query |
 
-The custom `minimum clearance` benchmark property uses the same edge resolution as planning and is a sampled estimate. OMPL's separate `solution clearance` property is the mean clearance at path waypoints. Both clearances are in meters. No shortcutting or smoothing is applied to benchmark paths. See [OMPL's path metrics](https://ompl.kavrakilab.org/classompl_1_1geometric_1_1PathGeometric.html).
+The database enum table identifies exact and approximate statuses. In this
+OMPL workflow `solved` means exact success; approximate endpoints are recorded
+separately and do not enter path-quality summaries. `solution_clearance` is a
+mean over waypoints, not the required minimum. No simplification or smoothing
+is applied (`Benchmark::Request::simplify=false`). Collision geometry, URDF
+bounds, resolution 0.005 (about 0.067 rad maximum interval), and the supplied
+edge-clearance sampler are fixed. Positive sampled clearance does not prove
+continuous collision freedom. All 478 exact paths passed the prescribed check,
+but 14 failed OMPL's post-run check with four times the segment count: 4 RRT
+and 10 RRT-Connect (6 at range .2). Exact means goal reaching under the
+prescribed validator. These diagnostics are exported as `exact_strict_passed`
+and `exact_strict_failed`; they do not change the primary exact-only summaries.
 
-Inspect solution status alongside path quality: an approximate solution ends short of the goal. Use `plan_arm.py --visualize` to view representative paths with the planner settings you selected.
+OMPL is initialized once per benchmark invocation. Its random generators then
+advance across settings, repetitions and queries. The recorded experiment
+seed is not an independently reset per-trial seed. Machine speed, scheduling
+and timeout termination can affect reproducibility. Timed trials ran
+sequentially; normal OS background activity was uncontrolled.
 
-## Files
-
-| Location | Purpose |
-| --- | --- |
-| `src/RTP.h`, `src/RTP.cpp` | Student planner implementation |
-| `provided/` | C++ arm model, collision checker, OMPL setup, and binding |
-| `arm_scene.py` | URDF and scene loading |
-| `plan_arm.py` | One planning trial and JSON export |
-| `visualize_path.py` | Viser playback of a saved result |
-| `benchmark.py`, `configs/` | OMPL benchmarks, Planner Arena database, and planner settings |
-| `resources/` | Panda model, meshes, and example scenes |
-| `visualization/viser-motion-planning/` | Project 2 visualization toolkit |
-| `tests/` | Checks of the supplied planning infrastructure |
-
-## Submit
-
-Include your sources, custom scenes, saved example paths, experiment settings, raw results, and report. Run `make clean` to remove the compiled extension and build directory, then zip the project as `Project3_<your NetID>_<partner NetID>.zip`. The handout gives the report requirements and grading.
-
-## Check the supplied infrastructure
+## Visualize paths
 
 ```bash
-python tests/check_support.py
+python plan_arm.py --scene resources/scenes/clutter.yaml --query query1 \
+  --planner RRTConnect --range 1 --time-limit 5 --seed 18101 \
+  --output results/new_example.json --visualize
 ```
 
-These checks cover forward kinematics against Project 2 reference data, collision geometry, scene queries, built-in planners, and exact versus approximate results. They do not test your RTP implementation. Do not use `--check-starter` with the completed RTP: that optional check expects the old placeholder.
-
-To rebuild the handout with a LaTeX installation:
+Open http://localhost:8080 and use `Playing` or the timestep slider. Select a
+query with `--query query1` through `query5`; obstacles stay fixed. Replay:
 
 ```bash
-pdflatex -output-directory=pdf src/project3_2026.tex
+python visualize_path.py results/part2/paths/RRTConnect.json
 ```
 
-## Part 1 (our submission)
+Representative paths, playback captures and `selection.json` are in
+`results/part2/paths/`. For each of RTP (bias .2), RRT (bias .05, range 1),
+RRT-Connect (range 1), and PRM (k=10), we generate seeds 18101–18105 on query1
+and select the exact path closest to that setting's benchmark query1 median length. Candidate successes and all five lengths
+are retained. Examples are illustrations, not extra benchmark observations.
+The length-based selection does not imply typical timing, clearance or smoothness.
+The same selected seed is run with `plan_arm.py --visualize`, and a Viser
+overview of its unsmoothed path is saved in `fig/part2_<planner>.png`.
 
-RTP is in `src/RTP.h` and `src/RTP.cpp`. Our two custom scenes are `resources/scenes/wall.yaml` and `resources/scenes/window.yaml`, each with two queries. Saved RTP paths (goal bias 0.05, 10 s limit) are in `results/rtp_<scene>_<query>.json`, plus one approximate example, `results/rtp_window_query2_approx_seed2.json`. Viser screenshots are in `fig/`, and the write-up is `pdf/project3_part1_writeup.pdf` (source in `report/`).
+To repeat automated browser inspection after installing Playwright:
 
 ```bash
-make
-python plan_arm.py --scene resources/scenes/wall.yaml --query query1 --planner RTP \
-  --goal-bias 0.05 --time-limit 10 --seed 1 --output review_runs/rtp_wall_query1.json --visualize
-python visualize_path.py results/rtp_window_query2.json
+python -m pip install playwright
+python -m playwright install chromium
+python inspect_part2_paths.py
+# Or: python inspect_part2_paths.py --browser-executable /path/to/chrome
 ```
 
-Build the write-up from this directory with two passes so figure references resolve:
+## Planner Arena
+
+Open https://planner-arena.kavrakilab.rice.edu/, choose **Change database**,
+and upload `results/benchmark.db`. Choose **Overall performance**, a clutter
+query (or aggregate when offered), and planners/settings to compare. Select
+`time` for solve time and `minimum clearance` for the custom metric. Keep
+simplified results disabled. Download plots with **Download plot as PDF**.
+Check the per-plot sample count: native approximate-path length/smoothness
+properties may exist, so use our exact-only local summaries for the report's
+path-quality comparison. Arena's time and solved plots use all trials.
+The October 18 upload succeeded. Downloaded query1 time, success and minimum-clearance
+PDFs, screenshots and upload provenance are in `results/part2/arena/`. The time
+plot is included in the report; local plots pool all five queries.
+
+## Preserved Part 1 and historical artifacts
+
+- RTP: `src/RTP.h`, `src/RTP.cpp`; supplied binding and collision model: `provided/`.
+- Custom scenes: `resources/scenes/wall.yaml`, `window.yaml`, two queries each.
+- Original custom RTP paths: `results/rtp_<scene>_<query>.json`, plus the window
+  query2 seed-2 approximate example. Images in `fig/` are retained unchanged.
+- Part 1 report: `pdf/project3_part1_writeup.pdf`, source in `report/`.
+- Old main database, summary, full report and README: `results/legacy_2026-10-14/`.
+- Other older databases: `results/benchmark_t1.db`, `benchmark_t20.db`,
+  `benchmark_shelf.db`; original native logs are unavailable. They are historical
+  data, not measurements from this fresh session.
+- `tests/check_review.py` now audits the archived October 14 main table and
+  historical artifacts. `analyze_part2.py` audits the new study.
+
+Original difficulty ratings and hour estimates are retained. The final contribution
+statement follows the confirmed work split above. Partners should review their
+personal time estimates before submitting.
+
+## Build report and package
+
+With a full LaTeX installation:
 
 ```bash
-pdflatex -halt-on-error -output-directory=pdf report/project3_part1_writeup.tex
-pdflatex -halt-on-error -output-directory=pdf report/project3_part1_writeup.tex
+pdflatex -halt-on-error -output-directory=pdf report/project3_report.tex
+pdflatex -halt-on-error -output-directory=pdf report/project3_report.tex
 ```
 
-It uses `comp450.cls`, which needs the `algorithms` LaTeX package (texlive-science). The final Part 1 report uses wider `fig/wall_query1_path_part1.png` and `fig/wall_query2_path_part1.png` views and an unclipped `fig/window_query2_path_part1.png` view rendered from the unchanged saved JSON paths; original screenshots remain available. Its focused archive includes the Part 1 report, scenes, paths, figures, planner/build sources and supplied robot/visualization assets. Part 2 report and experiment outputs stay in this checkout and are excluded from that Part 1 archive.
-
-## Part 2 (our submission)
-
-Our 20 planner settings are in `configs/planners.json` (5 RTP goal biases, 6 RRT goal bias/range pairs, 5 RRT-Connect ranges, 4 PRM neighbor counts, 5 s limit). Raw results are in `results/benchmark.db` (main run, clutter, 5 trials per query) plus `results/benchmark_t1.db`, `results/benchmark_t20.db` (same with 1 s and 20 s limits) and `results/benchmark_shelf.db` (shelf scene, 5 s). The matching original native logs were not committed and are unavailable here. Recover them from the machine that ran the experiments before considering any rerun. The database rows retain the raw per-trial metrics. `analyze_benchmark.py` makes the summary CSVs in `results/` and the plots in `fig/`. Representative paths for our selected settings are `results/clutter_query1_<planner>.json`. The full report is `pdf/project3_report.pdf` (source `report/project3_report.tex`). Existing figures were generated locally by `analyze_benchmark.py`; there is no retained evidence of a Planner Arena upload or download. Complete that handout requirement separately without replacing these databases.
+Alternatively use `tectonic -Z search-path="$PWD" -o pdf report/project3_report.tex` from this directory.
+The class requires the algorithms package (texlive-science). The completed
+report must remain 1–5 pages. Sources, configurations, scenes, example paths,
+raw logs, CSV exports, databases, images and both reports belong in the archive.
+Remove build outputs before packaging:
 
 ```bash
-python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 5 --output review_runs/benchmark.db
-python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 5 --time-limit 1 --output review_runs/benchmark_t1.db
-python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 5 --time-limit 20 --output review_runs/benchmark_t20.db
-python benchmark.py --scene resources/scenes/shelf.yaml --repetitions 5 --output review_runs/benchmark_shelf.db
-python analyze_benchmark.py --db results/benchmark.db --tag review_main
-pdflatex -output-directory=pdf report/project3_report.tex
+make clean
+cd ..
+mkdir -p submission_part2
+zip -r submission_part2/Project3_wl85_ds161.zip project3_2026 \
+  -x '*/__pycache__/*' '*/.DS_Store' '*/.git/*'
 ```
 
-## October 14 review and verification
-
-No RTP, collision-checking, scene, saved-path, screenshot, planner-configuration, or benchmark database files were changed in the review. CMake adds an Apple-only default symbol-visibility setting: nanobind's hidden visibility prevented the extension from recognizing OMPL sampleable goals in the reviewed macOS build. An obstacle-free goal-bias-1.0 case was approximate before the fix and exact afterward. Linux flags are unchanged. See [nanobind's visibility documentation](https://nanobind.readthedocs.io/en/latest/api_cmake.html#nanobind-set-visibility). The two reports distinguish original Linux measurements from local smoke checks, and use saved custom examples rather than unsupported aggregate trial claims. The reports retain the draft difficulty/hour estimates; both partners should review their contribution statements before submission.
-
-Read-only verification of saved artifacts and every number in the full benchmark table:
-
-```bash
-python -B tests/check_review.py > /tmp/project3_artifact_audit.json
-```
-
-This checks independent FK against the Pinocchio fixture, scene/query consistency, joint limits, obstructed direct paths, sampled path clearance, RTP parent relationships, database integrity, all 500 setting/query/trial combinations per database, recorded parameters, summary CSVs, and per-planner metric winners. It does not regenerate results. Add `--native-dir /path/to/built/project3_2026 --smoke` for exact and zero-time approximate binding checks plus four fresh-process RTP trials in the custom scenes with the saved examples' seeds and 10 s limits. Exact and approximate statuses are checked separately; these are smoke checks, not a success-rate experiment. A nominal seed is not a guarantee of the same path across platforms/builds.
-
-The standalone lifecycle check compiles the unchanged RTP source:
-
-```bash
-python -m cmake -S tests/rtp_lifecycle -B /tmp/project3_lifecycle_build -DCMAKE_PREFIX_PATH="$CONDA_PREFIX"
-python -m cmake --build /tmp/project3_lifecycle_build
-/tmp/project3_lifecycle_build/check_rtp_lifecycle
-```
-
-It checks exact/approximate paths, continuation, 25 clear/reuse cycles, start/goal labels and tree edges, invalid starts, independent solution-path ownership, and balanced state allocations/frees. It does not replace a general leak detector. `../docker/verify_rtp.py` is an older diagnostic that reseeds inside one process and only prints failures; use the review checks for documented pass/fail verification.
-
-Planning and benchmark collision resolution stays at 0.005 (about 0.067 rad maximum joint-space sampling interval). The denser audit uses at most 0.002 rad. All four saved custom RTP paths pass that denser check. The saved clutter RRT-Connect example has approximately 0.84 mm penetration between validator samples despite 0.27 mm recorded positive clearance. Neither a positive sampled minimum nor an exact solution proves continuous collision freedom. No benchmark paths were altered or smoothed.
-
-For isolated build verification, copy the project into a new working directory and run `make` there: CMake intentionally writes the extension into its source directory, even with an external build directory.
-
-Before packaging, stage a copy of the project outside the working checkout, run `make clean` in that staged copy, and zip it as `Project3_wl85_ds161.zip`. Keep Part 1 and Part 2 archives in separate directories. Part 1 needs the short report, RTP and support sources/assets, custom scenes, paths and figures; Part 2 additionally needs the complete report, configurations and raw experiment databases. Do not include build outputs or caches. The expected Part 2 database is still `results/benchmark.db`, not `review_runs/benchmark.db`.
-
-The full benchmark table is retained; `analyze_review.py` creates the additional readable representative-settings figure from the existing database without touching original plots:
-
-```bash
-python analyze_review.py --output fig/bench_review_selected_metrics.pdf
-```
-
-Verification summaries are retained in `review/validation.json` and explained in `review/README.md`. Remaining checks: partners' report/contribution review, recovery of native logs if available, and Planner Arena upload/download verification. Nothing was uploaded or submitted during the review.
+The prepared Part 2 archive is stored separately under `../submission_part2/`
+to preserve the existing Part 1 archive in the parent directory. Upload the
+Part 2 archive and complete report to Canvas yourself.

@@ -1,0 +1,4 @@
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 12 states, exact solution with 5 waypoints
+Info:    Solution found in 0.112785 seconds
+RTP: exact, 0.1129 s, 5 waypoints; saved results/part2/paths/RTP_seed18101.json

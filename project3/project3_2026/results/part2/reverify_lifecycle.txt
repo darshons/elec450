@@ -1,0 +1,146 @@
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000444 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000019 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000012 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000012 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000013 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000010 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000010 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000011 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000009 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    Solution found in 0.000008 seconds
+Info:    RTP: Starting planning with 2 states already in the tree
+Info:    RTP: Created 2 states, exact solution with 2 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    RTP: Created 1 states, exact solution with 1 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    ProblemDefinition: Adding approximate solution from planner RTP
+Info:    RTP: Created 1 states, approximate solution with 1 waypoints
+Info:    RTP: Starting planning with 1 states already in the tree
+Info:    ProblemDefinition: Adding approximate solution from planner RTP
+Info:    RTP: Created 4467 states, approximate solution with 5 waypoints
+Info:    Solution found in 0.010041 seconds
+Info:    RTP: Starting planning with 4467 states already in the tree
+Info:    ProblemDefinition: Adding approximate solution from planner RTP
+Info:    RTP: Created 9064 states, approximate solution with 5 waypoints
+Info:    Solution found in 0.010043 seconds
+Warning: RTP: Skipping invalid start state (invalid state)
+         at line 249 in /Users/winson/ompl/src/ompl/base/src/Planner.cpp
+Debug:   RTP: Discarded start state RealVectorState [0]
+
+Error:   RTP: There are no valid initial states!
+         at line 53 in /private/tmp/project3_verify_ucdrq3wt/project3_2026/src/RTP.cpp
+Info:    No solution found after 0.000069 seconds
+PASS: 25 clear/reuse cycles, exact/approximate/continuation/trivial/invalid-start, tree labels/edges, independent path ownership, balanced state allocation

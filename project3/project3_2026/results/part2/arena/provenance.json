@@ -1,0 +1,21 @@
+{
+  "url": "https://planner-arena.kavrakilab.rice.edu/",
+  "date_local": "2026-10-18",
+  "database": "/Users/winson/Documents/Projects/darshon_winson_450/project3/project3_2026/results/benchmark.db",
+  "sha256": "eab3dc452388111bfe7592691705c245d1d7beab95512d37f3eecce510ac6530",
+  "query": "clutter_query1_group1",
+  "planners": [
+    "RTP_gb0.2",
+    "RRT_gb0.05_r1.0",
+    "RRTConnect_r1.0",
+    "PRM_k10"
+  ],
+  "attributes": [
+    "time",
+    "solved",
+    "minimum clearance"
+  ],
+  "uploaded": true,
+  "plots_downloaded": true,
+  "scope": "5 runs per selected setting on query1; no aggregation offered across experiment names"
+}

@@ -1,0 +1,250 @@
+{
+  "dense_step_rad": 0.002,
+  "queries": [
+    {
+      "scene": "wall",
+      "query": "query1",
+      "endpoint_clearance_m": [
+        0.07562734309560287,
+        0.01638308784249913
+      ],
+      "direct_min_m": -0.07956274241000419
+    },
+    {
+      "scene": "wall",
+      "query": "query2",
+      "endpoint_clearance_m": [
+        0.10611200793683787,
+        0.0374647947674944
+      ],
+      "direct_min_m": -0.06940486070674745
+    },
+    {
+      "scene": "window",
+      "query": "query1",
+      "endpoint_clearance_m": [
+        0.21793685188668024,
+        0.05069682518459076
+      ],
+      "direct_min_m": -0.07736377823242373
+    },
+    {
+      "scene": "window",
+      "query": "query2",
+      "endpoint_clearance_m": [
+        0.18263359261514833,
+        0.03904423631571846
+      ],
+      "direct_min_m": -0.08129152883630135
+    }
+  ],
+  "paths": [
+    {
+      "file": "clutter_query1_PRM.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 0.029628058,
+      "waypoints": 3,
+      "length_rad": 7.134984223696594,
+      "sampled_clearance_m": 0.09525387706359992,
+      "dense_clearance_m": 0.09525387706359992
+    },
+    {
+      "file": "clutter_query1_RRT.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 1.493028732,
+      "waypoints": 12,
+      "length_rad": 10.625195713669388,
+      "sampled_clearance_m": 0.07052700551961291,
+      "dense_clearance_m": 0.07052529824107803
+    },
+    {
+      "file": "clutter_query1_RRTConnect.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 0.011780844,
+      "waypoints": 4,
+      "length_rad": 2.921217151714414,
+      "sampled_clearance_m": 0.00026963459128326143,
+      "dense_clearance_m": -0.0008407281480799309
+    },
+    {
+      "file": "clutter_query1_RTP.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 0.026540142,
+      "waypoints": 3,
+      "length_rad": 6.514137110141975,
+      "sampled_clearance_m": 0.09525387706359992,
+      "dense_clearance_m": 0.09525387706359992
+    },
+    {
+      "file": "rtp_wall_query1.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 0.676289247,
+      "waypoints": 8,
+      "length_rad": 30.774108466677543,
+      "sampled_clearance_m": 0.01638308784249913,
+      "dense_clearance_m": 0.01638308784249913
+    },
+    {
+      "file": "rtp_wall_query2.json",
+      "status": "exact",
+      "seed": 5,
+      "time_s": 0.201178186,
+      "waypoints": 4,
+      "length_rad": 9.609480230642777,
+      "sampled_clearance_m": 0.0374647947674944,
+      "dense_clearance_m": 0.0374647947674944
+    },
+    {
+      "file": "rtp_window_query1.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 0.116600052,
+      "waypoints": 4,
+      "length_rad": 11.7977933661371,
+      "sampled_clearance_m": 0.0048829515856900416,
+      "dense_clearance_m": 0.004852144781218738
+    },
+    {
+      "file": "rtp_window_query2.json",
+      "status": "exact",
+      "seed": 1,
+      "time_s": 0.602740298,
+      "waypoints": 7,
+      "length_rad": 24.46162304707443,
+      "sampled_clearance_m": 0.014009125395194028,
+      "dense_clearance_m": 0.012172131971654426
+    },
+    {
+      "file": "rtp_window_query2_approx_seed2.json",
+      "status": "approximate",
+      "seed": 2,
+      "time_s": 10.065389302,
+      "waypoints": 1,
+      "length_rad": 0,
+      "sampled_clearance_m": 0.18263359261514833,
+      "dense_clearance_m": 0.18263359261514833
+    }
+  ],
+  "benchmarks": {
+    "main": {
+      "runs": 500,
+      "exact": 472,
+      "time_limit_s": 5,
+      "csv_matches": true
+    },
+    "t1": {
+      "runs": 500,
+      "exact": 433,
+      "time_limit_s": 1,
+      "csv_matches": true
+    },
+    "t20": {
+      "runs": 500,
+      "exact": 486,
+      "time_limit_s": 20,
+      "csv_matches": true
+    },
+    "shelf": {
+      "runs": 500,
+      "exact": 454,
+      "time_limit_s": 5,
+      "csv_matches": true
+    }
+  },
+  "fk_reference_max_error_m": 3.3306690738754696e-16,
+  "best_main_settings": {
+    "RTP": {
+      "time": {
+        "config": "RTP_gb0.5",
+        "median": 0.0444958,
+        "exact": 25
+      },
+      "solution_length": {
+        "config": "RTP_gb0.5",
+        "median": 10.9352,
+        "exact": 25
+      },
+      "solution_smoothness": {
+        "config": "RTP_gb0.2",
+        "median": 0.430742,
+        "exact": 25
+      },
+      "minimum_clearance": {
+        "config": "RTP_gb0.1",
+        "median": 0.08132845679072098,
+        "exact": 25
+      }
+    },
+    "RRT": {
+      "time": {
+        "config": "RRT_gb0.2_r1.0",
+        "median": 0.0921126,
+        "exact": 22
+      },
+      "solution_length": {
+        "config": "RRT_gb0.05_r0.2",
+        "median": 4.23967,
+        "exact": 17
+      },
+      "solution_smoothness": {
+        "config": "RRT_gb0.05_r2.5",
+        "median": 2.03395,
+        "exact": 23
+      },
+      "minimum_clearance": {
+        "config": "RRT_gb0.05_r2.5",
+        "median": 0.0979251207700089,
+        "exact": 23
+      }
+    },
+    "RRTConnect": {
+      "time": {
+        "config": "RRTConnect_r1.0",
+        "median": 0.0191431,
+        "exact": 25
+      },
+      "solution_length": {
+        "config": "RRTConnect_r0.2",
+        "median": 3.89917,
+        "exact": 25
+      },
+      "solution_smoothness": {
+        "config": "RRTConnect_r5.0",
+        "median": 0.528261,
+        "exact": 25
+      },
+      "minimum_clearance": {
+        "config": "RRTConnect_r5.0",
+        "median": 0.09113466752762396,
+        "exact": 25
+      }
+    },
+    "PRM": {
+      "time": {
+        "config": "PRM_k5",
+        "median": 0.0531291,
+        "exact": 25
+      },
+      "solution_length": {
+        "config": "PRM_k5",
+        "median": 7.74995,
+        "exact": 25
+      },
+      "solution_smoothness": {
+        "config": "PRM_k40",
+        "median": 0.40278,
+        "exact": 25
+      },
+      "minimum_clearance": {
+        "config": "PRM_k10",
+        "median": 0.09922794468752699,
+        "exact": 25
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+Info:    PRM: Starting planning with 2 states already in datastructure
+Info:    PRM: Created 4 states
+Info:    Solution found in 0.137961 seconds
+PRM: exact, 0.1380 s, 3 waypoints; saved results/part2/paths/PRM.json
+╭────── viser (listening *:8213) ───────╮
+│             ╷                         │
+│   HTTP      │ http://localhost:8213   │
+│   Websocket │ ws://localhost:8213     │
+│             ╵                         │
+╰───────────────────────────────────────╯
+(viser) Connection opened (0, 1 total), 131 persistent messages
+Path viewer: http://localhost:8213 (Ctrl+C to stop)
+(viser) Connection closed (0, 0 total)
