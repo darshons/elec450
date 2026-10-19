@@ -28,10 +28,11 @@ RTP stores states and parent pointers in a vector. Each iteration selects a vert
 
 \begin{center}
 \captionsetup{type=figure}
-\subfigure[Wall q1 start/goal]{\includegraphics[width=.24\linewidth,height=1.25in,keepaspectratio]{wall_query1_scene.png}}
-\subfigure[Wall q1 RTP path]{\includegraphics[width=.24\linewidth,height=1.25in,keepaspectratio]{wall_query1_path_part1.png}}
-\subfigure[Window q2 start/goal]{\includegraphics[width=.24\linewidth,height=1.25in,keepaspectratio]{window_query2_scene.png}}
-\subfigure[Window q2 RTP path]{\includegraphics[width=.24\linewidth,height=1.25in,keepaspectratio]{window_query2_path_part1.png}}
+\renewcommand{\subcapsize}{\footnotesize}
+\subfigure[Wall q1 start/goal]{\makebox[.24\linewidth]{\includegraphics[height=1.33in,trim=235 210 105 240,clip]{wall_query1_scene.png}}}\hfill
+\subfigure[Wall q1 RTP path]{\makebox[.24\linewidth]{\includegraphics[height=1.33in,trim=175 140 230 290,clip]{wall_query1_path_part1.png}}}\hfill
+\subfigure[Window q2 start/goal]{\makebox[.24\linewidth]{\includegraphics[height=1.33in,trim=235 135 200 230,clip]{window_query2_scene.png}}}\hfill
+\subfigure[Window q2 RTP path]{\makebox[.24\linewidth]{\includegraphics[height=1.33in,trim=240 280 265 245,clip]{window_query2_path_part1.png}}}
 \captionof{figure}{RTP in our custom scenes: blue start, green goal, orange raw RTP waypoints, red gripper path. The submission includes full-size images and paths for both queries in each scene.}
 \end{center}
 For wall q1/q2 and window q1/q2, the four saved exact paths (bias .05, 10 s limit) took .676, .201, .117 and .603 s, with lengths of 30.77, 9.61, 11.80 and 24.46 rad. Although they have only 4--8 waypoints, the arm makes large swings and loops. Window q2 seed 2 instead returned an approximate one-state path after 10.065 s. These individual examples do not establish a success rate. State ownership and selecting the approximate endpoint were the main implementation challenges.
@@ -64,25 +65,28 @@ We used the database status labels and checked them against \texttt{solved} and 
 \newpage
 \section*{Success by query and time to an exact solution}
 \begin{center}
-\includegraphics[width=.94\linewidth]{part2_queries.pdf}
+\includegraphics[width=.72\linewidth]{part2_queries.pdf}
 \captionof{figure}{Exact solutions out of five trials in each query/setting; each cell contributes equally to its setting's 25-run summary. The complete per-query metric summaries are in \texttt{results/part2/per\_query.csv}.}
-\includegraphics[width=.94\linewidth]{part2_exact_ecdf.pdf}
+\includegraphics[width=.62\linewidth]{part2_exact_ecdf.pdf}
 \captionof{figure}{Fraction of all 25 trials that reached the exact goal by the indicated measured solve time. Unsuccessful trials stay in the denominator. This differs from a successful-run-only timing plot, which would hide unreliability.}
+\renewcommand{\subcapsize}{\footnotesize}
+\subfigure[solve time (s)]{\includegraphics[width=.4\linewidth]{query1_time.pdf}}\hspace{.04\linewidth}
+\subfigure[minimum clearance (m)]{\includegraphics[width=.4\linewidth]{query1_minimum_clearance.pdf}}
+\captionof{figure}{Planner Arena query1 plots from our uploaded database, five runs per setting (all five solved).}
 \end{center}
 \input{results/part2/query_discussion.tex}
 
 {\footnotesize\textbf{Sources.} Assignment and supplied OMPL workflow; OMPL \href{https://ompl.kavrakilab.org/PathGeometric_8cpp_source.html}{PathGeometric metrics}. Planner Arena: Moll, \c{S}ucan and Kavraki, ``Benchmarking Motion Planning Algorithms,'' IEEE RAM 22(3), 96--102, 2015.}
 
 
-\newpage
 \section*{Representative paths and conclusions}
 \begin{center}
 \captionsetup{type=figure}
-\subfigure[RTP $b=.2$]{\includegraphics[width=.24\linewidth]{part2_RTP.png}}
-\subfigure[RRT $b=.05,r=1$]{\includegraphics[width=.24\linewidth]{part2_RRT.png}}
-\subfigure[RRT-Connect $r=1$]{\includegraphics[width=.24\linewidth]{part2_RRTConnect.png}}
-\subfigure[PRM $k=10$]{\includegraphics[width=.24\linewidth]{part2_PRM.png}}
-\captionof{figure}{Example paths for clutter query1 in Viser: blue start, green goal, orange interior waypoints and red gripper trace. Same camera and scale. The selected raw path was also inspected with \texttt{plan\_arm.py --visualize}. Full-size overviews and playback captures are included.}
+\subfigure[RTP $b=.2$]{\includegraphics[width=.24\linewidth,trim=190 200 190 180,clip]{part2_RTP.png}}
+\subfigure[RRT $b=.05,r=1$]{\includegraphics[width=.24\linewidth,trim=190 200 190 180,clip]{part2_RRT.png}}
+\subfigure[RRT-Connect $r=1$]{\includegraphics[width=.24\linewidth,trim=190 200 190 180,clip]{part2_RRTConnect.png}}
+\subfigure[PRM $k=10$]{\includegraphics[width=.24\linewidth,trim=190 200 190 180,clip]{part2_PRM.png}}
+\captionof{figure}{Example paths for clutter query1 in Viser: blue start, green goal, orange interior waypoints and red gripper trace. Same camera and scale. The selected raw path was also inspected with \texttt{plan\_arm.py -{}-visualize}. Full-size overviews and playback captures are included.}
 \end{center}
 \input{results/part2/path_discussion.tex}
 

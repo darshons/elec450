@@ -193,8 +193,9 @@ Check the per-plot sample count: native approximate-path length/smoothness
 properties may exist, so use our exact-only local summaries for the report's
 path-quality comparison. Arena's time and solved plots use all trials.
 We uploaded the database on October 18. The downloaded query1 time, solved and
-minimum-clearance PDFs and a screenshot are in `results/part2/arena/`. All three
-are in the report; our own plots pool all five queries.
+minimum-clearance PDFs and a screenshot are in `results/part2/arena/`. The time
+and minimum-clearance plots are in the report (copied to `fig/`); our own plots
+pool all five queries.
 
 ## Part 1 files
 
