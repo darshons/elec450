@@ -1,9 +1,0 @@
-test_cli_writes_only_database_and_logs_and_replaces_previous_runs (__main__.BenchmarkChecks.test_cli_writes_only_database_and_logs_and_replaces_previous_runs) ... ok
-test_database_distinguishes_approximate_solutions_from_timeouts (__main__.BenchmarkChecks.test_database_distinguishes_approximate_solutions_from_timeouts) ... ok
-test_minimum_clearance_remains_distinct_from_ompl_average_clearance (__main__.BenchmarkChecks.test_minimum_clearance_remains_distinct_from_ompl_average_clearance) ... ok
-test_native_logs_roundtrip_preserves_runs_parameters_and_clear_lifecycle (__main__.BenchmarkChecks.test_native_logs_roundtrip_preserves_runs_parameters_and_clear_lifecycle) ... ok
-
-----------------------------------------------------------------------
-Ran 4 tests in 2.537s
-
-OK
