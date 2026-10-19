@@ -1,22 +1,25 @@
-# Fresh Part 2 study — October 18, 2026
+# Part 2 results (October 18, 2026)
 
-This directory is the new study. Do not pool it with `../pilot` or the older databases.
-The canonical submission database is also copied to `../benchmark.db` after completion.
+These are the 500 runs used in the report. `../benchmark.db` is an identical copy of `benchmark.db`.
 
-- `environment.json`: commands, package/build versions, configuration, source hashes, seeds, fixed model, and pilot decision.
-- `benchmark.db`, `benchmark_logs/*.log`, `console.txt`: native OMPL results, converter output and console record. Five logs, one per query; 20 configurations × 5 trials in each log.
-- `runs.csv`: all raw database run fields, settings and available experiment seeds, plus decoded outcome and query. Trial numbers describe order within a setting/query, not independent seed values.
-- `summary.csv`: 25 runs per setting, exact counts and percentages, approximate/failure counts, all-run solve-time summaries, exact-only quality summaries and quartiles.
-- `per_query.csv`: corresponding summaries for each of the 100 setting/query groups (5 runs each).
-- `schema.sql`, `status_enums.json`: inspected database schema and actual status mapping. `status=6` is exact; `5` is approximate; all other statuses are failures. The exporter discovers these codes by description and checks them against `solved` and `approximate_solution`.
-- `table.tex`, `winners.json`: generated report table and metric winners, each with supporting exact counts.
-- `paths/`: independent illustrative paths, logs, Viser captures, candidate-selection records. These runs are excluded from the study. The displayed example is the exact candidate closest to the benchmark query1 median length among seeds 18101–18105, separately for each planner; this is not claimed to reproduce a benchmark trial.
+- `environment.json`: commands, package/build versions, configuration, source hashes and seeds.
+- `benchmark.db`, `benchmark_logs/*.log`, `console.txt`: native OMPL results, the converter output and the console record. There are five logs, one per query, each with 20 settings × 5 trials.
+- `runs.csv`: every database run with its setting, query and decoded outcome. Trial numbers give the order within a setting/query, not separate seeds.
+- `summary.csv`: 25 runs per setting: exact counts and percentages, approximate/failure counts, solve-time summaries over all runs, and path-quality summaries and quartiles over exact runs.
+- `per_query.csv`: the same summaries for each of the 100 setting/query groups (5 runs each).
+- `schema.sql`, `status_enums.json`: database schema and status codes. `status=6` is exact, `5` is approximate, anything else is a failure. These match the `solved` and `approximate_solution` columns.
+- `table.tex`, `winners.json`, `analysis.txt`: the report table, the best setting for each metric, and the analysis output.
+- `strict_sensitivity.csv`: path-quality medians after dropping the 14 exact paths that failed OMPL's finer post-run check.
+- `paths/`: the example paths in the report, with logs, Viser captures and `selection.json`. These are separate runs and are not part of the benchmark statistics. For each planner we ran query1 with seeds 18101–18105 and kept the exact path closest to that setting's benchmark query1 median length.
+- `arena/`: Planner Arena query1 plots (time, solved, minimum clearance), a screenshot and upload details.
 
-`time` measures OMPL's solve call including collision checks. Keep approximate and failed runs at their actual elapsed times; do not clip to the nominal timeout. A timeout can exceed the budget while a collision check completes. No paths are simplified or smoothed. Path quality uses exact results only. `minimum_clearance` is the supplied minimum sampled robot-sphere surface distance along edges, in meters; `solution_clearance` is a separate waypoint average and is not used as the minimum.
+`time` is OMPL's solve time including collision checks. Approximate and failed runs keep their actual elapsed times, which can go slightly past 5 s while a collision check finishes. Paths are not simplified or smoothed. Path quality uses exact results only. `minimum_clearance` is the minimum sampled robot-sphere surface distance along the path, in meters; `solution_clearance` is OMPL's waypoint average and is not used.
 
-The 100-run pilot used one run per setting/query, 1 second, seed 18001: 86 exact, 14 approximate, no failures. The final study uses 5 seconds and seed 18002. Both initialize OMPL once per invocation, then advance generator state. They are not paired-seed experiments. Timing and platform changes can alter paths. Ordinary background OS activity was not controlled.
+All 478 exact paths passed the check at the required resolution. 14 failed OMPL's post-run check with four times as many segments (4 RRT, 10 RRT-Connect, 6 of them at range .2). `summary.csv` and `per_query.csv` list these as `exact_strict_passed` and `exact_strict_failed`.
 
-Reproduce from the project directory with the course environment active:
+OMPL is seeded once per benchmark run (seed 18002), so trials do not have independent seeds. Normal background OS activity was not controlled.
+
+To reproduce from the project directory with the course environment active:
 
 ```bash
 python benchmark.py --scene resources/scenes/clutter.yaml --repetitions 5 \
@@ -25,12 +28,4 @@ python analyze_part2.py --db results/reproduction/benchmark.db --out results/rep
   --fig-dir results/reproduction/fig
 ```
 
-Use a new output path: the supplied benchmark runner replaces an existing destination database and native logs.
-
-Historical artifacts remain in `../legacy_2026-10-14/` and the original `benchmark_t1.db`, `benchmark_t20.db`, `benchmark_shelf.db`. Their original native logs are unavailable. The final report uses only the fresh main study for quantitative comparisons.
-
-Final validation is recorded in `validation.json`. The native logs reconstruct all five database tables exactly. All four selected example paths also have positive independently sampled clearance at .002 rad intervals (`paths/dense_check.json`); this does not prove continuous collision freedom. The Planner Arena upload and three query1 PDF downloads completed; see `arena/provenance.json`. Partners still need to review personal time estimates and submit to Canvas.
-
-The accuracy audit found that all 478 exact paths passed the prescribed check, while 14 failed OMPL's additional post-run check with four times the segment count (4 RRT, 10 RRT-Connect, including 6 at range .2). Exact status denotes goal reaching; it is not a continuous collision-freedom certificate. Summary and per-query exports now include the separate strict-check counts.
-
-`strict_sensitivity.csv` provides a secondary quality comparison excluding the 14 finer-check failures. Its shortest pooled median is RRT bias .05, range 1 (4.11743 rad, 23 retained exact paths); the smoothness and clearance winners remain PRM k=10 and RTP bias .05. This check does not replace the prescribed-resolution comparison or prove continuous collision freedom.
+Use a new output path, since the benchmark runner replaces an existing database and its logs.

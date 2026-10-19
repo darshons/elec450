@@ -1,4 +1,4 @@
-"""Audit and export the fresh Part 2 study; never pool pilot or legacy runs.
+"""Check and export the Part 2 benchmark results and make the report figures.
 
 Run from the project directory: python analyze_part2.py
 """
@@ -31,7 +31,7 @@ def main():
     parser.add_argument('--db', type=Path, default=Path('results/benchmark.db'))
     parser.add_argument('--out', type=Path, default=Path('results/part2'))
     parser.add_argument('--fig-dir', type=Path, default=Path('fig'),
-                        help='Use a separate directory for reproduction or pilot plots')
+                        help='Figure output directory (use a new one for reproductions)')
     parser.add_argument('--expected-repetitions', type=int, default=5)
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
