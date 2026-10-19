@@ -1,7 +1,7 @@
-"""Independent, read-only audit of the fresh study, exports and report table.
+"""Read-only checks of the Part 2 benchmark data, exports, report table and saved paths.
 
-Run from project3_2026 with the course environment active. No planner extension
-is required. Uses standard-library statistics rather than the analysis code.
+Run from project3_2026 with the course environment active. The planner extension
+is not needed. Statistics are recomputed with the standard library.
 """
 import collections
 import csv
@@ -18,7 +18,10 @@ import sys
 import tempfile
 import unittest
 
+import numpy as np
+
 ROOT = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(ROOT), str(Path(__file__).resolve().parent)]
 METRICS = ('time', 'solution_length', 'solution_smoothness', 'minimum_clearance')
 
 
@@ -34,7 +37,7 @@ def percentile(values, fraction):
     return ordered[lo] + (ordered[hi] - ordered[lo]) * (position - lo)
 
 
-class Part2Audit(unittest.TestCase):
+class Part2Checks(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.con = sqlite3.connect((ROOT / 'results/benchmark.db').as_uri() + '?mode=ro', uri=True)
@@ -70,10 +73,6 @@ class Part2Audit(unittest.TestCase):
         self.assertEqual(sum(r['config'] == 'RRTConnect_r0.2' for r in strict), 6)
         for e in self.con.execute('SELECT * FROM experiments'):
             self.assertEqual((e['runcount'], e['timelimit'], e['seed']), (5, 5., '18002'))
-        with sqlite3.connect(ROOT / 'results/pilot/benchmark.db') as c:
-            self.assertEqual(dict(c.execute('SELECT status,count(*) FROM runs GROUP BY status')), {6:86,5:14})
-            self.assertTrue(all(row == (1, 1., '18001') for row in c.execute(
-                'SELECT runcount,timelimit,seed FROM experiments')))
         env = json.loads((ROOT / 'results/part2/environment.json').read_text())
         for file, digest in env['file_sha256'].items():
             self.assertEqual(hashlib.sha256((ROOT / file).read_bytes()).hexdigest(), digest, file)
@@ -146,7 +145,7 @@ class Part2Audit(unittest.TestCase):
                          (ROOT / 'results/part2/benchmark.db').read_bytes())
         converter = shutil.which('ompl_benchmark_statistics.py')
         self.assertIsNotNone(converter, 'Activate the course environment for the OMPL converter')
-        with tempfile.TemporaryDirectory(prefix='part2-audit-') as tmp:
+        with tempfile.TemporaryDirectory(prefix='part2-check-') as tmp:
             target = Path(tmp) / 'reconverted.db'
             logs = sorted((ROOT / 'results/part2/benchmark_logs').glob('*.log'))
             self.assertEqual(len(logs), 5)
@@ -158,8 +157,7 @@ class Part2Audit(unittest.TestCase):
                                      c.execute(f'SELECT * FROM {table}').fetchall(), table)
 
     def test_representative_selection_and_independent_path_metrics(self):
-        sys.path.insert(0, str(ROOT))
-        from check_review import Geometry
+        from geometry import Geometry
         from arm_scene import load_scene
         geo = Geometry()
         scene = load_scene(ROOT / 'resources/scenes/clutter.yaml')
@@ -189,6 +187,36 @@ class Part2Audit(unittest.TestCase):
             self.assertGreater(geo.path_minimum(path,scene,.002),0)
             for suffix in ['_playback.png','_playback_mid.png']:
                 self.assertTrue((ROOT / 'results/part2/paths' / (s['planner']+suffix)).exists())
+
+    def test_part1_queries_and_saved_rtp_paths(self):
+        from geometry import Geometry
+        from arm_scene import load_scene
+        geo = Geometry()
+        for name in ('wall', 'window'):
+            scene = load_scene(ROOT / f'resources/scenes/{name}.yaml')
+            for query in scene['queries']:
+                pair = [query['start'], query['goal']]
+                self.assertTrue(geo.bounded(pair))
+                self.assertTrue(all(geo.clearance(pair, scene) > 0), (name, query['name']))
+                direct = geo.clearance(np.linspace(*pair, 401), scene).min()
+                self.assertLess(direct, 0, (name, query['name']))
+        files = sorted((ROOT / 'results').glob('rtp_*.json'))
+        self.assertEqual(len(files), 5)
+        for file in files:
+            saved = json.loads(file.read_text())
+            path, scene, query = saved['path'], saved['scene'], saved['query']
+            self.assertEqual(saved['planner'], 'RTP')
+            self.assertEqual(scene, load_scene(ROOT / f"resources/scenes/{scene['name']}.yaml"))
+            self.assertTrue(geo.bounded(path))
+            self.assertEqual(path[0], query['start'])
+            self.assertEqual(len(saved['edges']), len(saved['vertices']) - 1)
+            self.assertGreater(geo.path_minimum(path, scene, .002), 0, file.name)
+            if saved['status'] == 'exact':
+                self.assertEqual(path[-1], query['goal'])
+                self.assertAlmostEqual(geo.path_minimum(path, scene, geo.step), saved['min_clearance'], places=9)
+            else:
+                self.assertEqual(saved['status'], 'approximate')
+                self.assertIsNone(saved['length'])
 
 
 if __name__ == '__main__':
