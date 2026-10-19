@@ -73,6 +73,10 @@ class Part2Checks(unittest.TestCase):
         self.assertEqual(sum(r['config'] == 'RRTConnect_r0.2' for r in strict), 6)
         for e in self.con.execute('SELECT * FROM experiments'):
             self.assertEqual((e['runcount'], e['timelimit'], e['seed']), (5, 5., '18002'))
+        with sqlite3.connect(ROOT / 'results/pilot/benchmark.db') as c:
+            self.assertEqual(dict(c.execute('SELECT status,count(*) FROM runs GROUP BY status')), {6:86,5:14})
+            self.assertTrue(all(row == (1, 1., '18001') for row in c.execute(
+                'SELECT runcount,timelimit,seed FROM experiments')))
         env = json.loads((ROOT / 'results/part2/environment.json').read_text())
         for file, digest in env['file_sha256'].items():
             self.assertEqual(hashlib.sha256((ROOT / file).read_bytes()).hexdigest(), digest, file)

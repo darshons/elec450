@@ -85,8 +85,8 @@ connectivity. These are exploratory settings, not claimed optima.
 A quick 100-run pilot (one trial per setting/query, 1 s, seed 18001) gave
 86 exact and 14 approximate solutions, so we used 5 s for the real runs to
 give the harder settings more time. The study has **500 runs**: 20 settings ×
-5 clutter queries × 5 trials, seed 18002. Only these 500 runs are used in the
-report.
+5 clutter queries × 5 trials, seed 18002. The pilot data is in
+`results/pilot/`; only the 500 runs are used in the report.
 
 To reproduce, write to a new directory with no other timed jobs running:
 
