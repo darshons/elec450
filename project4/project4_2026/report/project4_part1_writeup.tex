@@ -1,0 +1,36 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[margin=0.65in]{geometry}
+\usepackage{graphicx,amsmath,mathptmx,booktabs}
+\usepackage[T1]{fontenc}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\begin{document}
+\begin{center}
+{\Large\bfseries Project 4 Part 1: Planning with Dynamics}\\[3pt]
+Darshon Singh (ds161) and Winson Lin (wl85)\quad---\quad COMP/ELEC/MECH 450/550
+\end{center}
+\textbf{Problem and implementation.}
+We solved the checkpoint's Exercises 1 and 2 using OMPL's \emph{control} RRT and KPIECE1. Both systems use RK4 ODE integration with a 0.001\,s step, propagation/validity checks every 0.02\,s, sampled control durations of 0.02--0.50\,s, and goal bias 0.1. Only angles are wrapped after propagation; positions and velocities are never clamped.
+
+\textbf{Pendulum.}
+The state is $(\theta,\omega)\in S^1\times[-10,10]$, with zero angle horizontal and dynamics $\dot\theta=\omega$, $\dot\omega=-9.81\cos\theta+\tau$. We plan from hanging down at rest $(-\pi/2,0)$ to upright at rest $(\pi/2,0)$, with $|\tau|\leq3,5,10$. There are no obstacles; validity checks state bounds. The goal tolerance is 0.15 in the sum of wrapped angle and velocity differences. KPIECE projects to $(\theta,\omega)$ with cell sizes $(0.25,0.5)$.
+
+\textbf{Car and street.}
+The point car has state $(x,y,\theta,v)\in SE(2)\times[-2,2]$, workspace $[0,12]\times[0,10]$\,m, and dynamics $(\dot x,\dot y,\dot\theta,\dot v)=(v\cos\theta,v\sin\theta,u_0,u_1)$, with $|u_0|\leq1$\,rad/s and $|u_1|\leq1$\,m/s$^2$. Reverse is allowed. Closed building rectangles $(x,y,w,h)$ are $(3,0,1,6.5)$, $(6,3.5,1,6.5)$, and $(9,0,1,6.5)$; touching collides. Start and goal are $(1,1,\pi/2,0)$ and $(11,9,\pi/2,0)$. Goal tolerance is 0.5 in OMPL's metric $\|\Delta(x,y)\|_2+0.5|\Delta\theta|_{S^1}+|\Delta v|$. KPIECE projects to $(x,y,v)$ with cells $(0.5,0.5,0.5)$.
+
+\begin{center}
+\includegraphics[width=\linewidth]{fig/checkpoint_paths.pdf}
+\end{center}
+\vspace{-6pt}
+{\small\textbf{Figure 1.} Top: RRT; bottom: KPIECE1. The first three columns show pendulum phase-space paths for the three torque limits. Lines break at the $\pm\pi$ seam. The last column shows the point car navigating alternating passages around gray buildings. Green circles mark starts; red stars mark target states/positions. Car headings and speeds are checked in the saved states, although this view shows only position.}
+
+\textbf{Examples and interpretation.}
+All eight displayed paths are exact solutions within their stated goal regions. Pendulum trajectory durations for torque bounds 3, 5, 10 are respectively 7.44, 4.14, 2.38\,s (RRT) and 11.32, 6.70, 5.36\,s (KPIECE1). In these examples, smaller torques require larger phase-space excursions to build energy; the torque-10 RRT path reaches upright with a smaller swing. Car trajectory durations are 43.94\,s (RRT) and 37.22\,s (KPIECE1). Seeds are 450 except car KPIECE1 (451). A preliminary car KPIECE1 run at seed 450 was approximate after 60\,s; its log is retained. These selected single runs do not establish planner success rates or performance rankings.
+
+\textbf{Two accuracy reviews.}
+First, C++ analytical checks verified dynamics, projections, propagation, bounds, and collision/contact cases; OMPL checked each saved control path and goal. Second, independent SciPy integration replayed every control at tighter tolerance and sampled at most every 0.002\,s: all paths passed bounds, obstacle, and goal checks; local endpoint error was below $4\times10^{-11}$. Raw states, controls, durations, logs, and validation results accompany the code. The PDF and archive also received two final checks.
+
+\textbf{Equal contributions (50\% each).}
+Darshon: pendulum modeling, validity, RRT/KPIECE setup, and torque analysis. Winson: car modeling, street/collision checking, RRT/KPIECE setup, and visualization. Both shared integration, the two accuracy reviews, interpretation, report writing, and submission preparation. The overall work was split evenly.
+\end{document}

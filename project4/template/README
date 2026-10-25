@@ -1,0 +1,68 @@
+COMP/ELEC/MECH 450/550
+Project 4 (2026)
+
+What are we doing?
+------------------
+
+This project requires you to:
+ 1. Copy your isValidPoint, isValidCircle, and isValidSquare implementations
+ from Project 2's collision_checking_2d/src/CollisionChecking.cpp into the
+ supplied CollisionChecking.cpp, along with their helper routines and required
+ includes. Keep the supplied Project 4 header.
+ 2. Implement Reachability-Guided RRT (RG-RRT) in "RG-RRT.cpp" and "RG-RRT.h".
+ You should start from the existing implementation RRT in OMPL. Note that this
+ time we are doing control planning, rather than geometric.
+ 3. Implement the exercise code that uses your planner in "Project4Pendulum.cpp"
+ and "Project4Car.cpp".
+
+Implement the planning exercises in C++. Your planning implementation must be
+your own. You may add code to any of the supplied files. Python may be used for
+visualization and analysis.
+
+All code for this project should be placed under the `src` directory.
+
+How do I run the code?
+----------------------
+
+Use the same environment as Projects 2 and 3:
+
+    micromamba activate ompl_env
+    cd project4_2026/template
+    make
+
+The Makefile uses the environment's Python and CMake to find OMPL and build with
+C++17. Run make after each C++ edit. Two executables are produced:
+ 1. Project4Pendulum, which prompts you for either planning or benchmarking,
+ what torque for the pendulum, and in the case of planning what planner to use,
+ and
+2. Project4Car, which prompts you for planning or benchmarking and in the case
+of planning what planner to use.
+
+Run ./Project4Pendulum or ./Project4Car from this directory. The starter compiles,
+but the TODO functions do not perform planning until you implement them.
+
+How do I check my code?
+-----------------------
+
+The accuracy of your implementation will be assessed. You are required to
+visualize your paths generated in both cases for the report, and this
+visualization will be an invaluable tool for your debugging process. You can
+use Python to plot the pendulum in (theta, omega) phase space and the car's path
+over the street obstacles. Export states with PathControl::asGeometric() and
+PathGeometric::printAsMatrix(). Project 3's Panda-arm replay uses a different
+path format; create plots for these systems.
+
+How do I compare planners?
+-------------------------
+
+Implement benchmarkPendulum and benchmarkCar using ompl::tools::Benchmark.
+Run at least 20 independent trials per planner for both systems, with torque 3
+for the pendulum. Save the native OMPL benchmark logs, then convert them using
+the tool in ompl_env:
+
+    python "$(command -v ompl_benchmark_statistics.py)" -d benchmark.db *.log
+
+Upload benchmark.db at https://planner-arena.kavrakilab.rice.edu/ using
+"Change database" to compare results and download plots for the report.
+Include your raw logs and report with the submission described in the handout.
+Run make clean before zipping your source directory.
