@@ -1,0 +1,307 @@
+\documentclass{comp450}
+
+\title{Project 4: Out of Control Planning}
+\author{}
+
+\begin{document}
+\maketitle
+
+\ompldocinfo
+
+In the previous project, you computed collision-free geometric paths for the Panda arm without modeling velocity, acceleration, or torque limits.
+In this project, you will be planning for more complex systems -- systems with dynamical constraints on their motion.
+For these complex systems, a collision-free path may not always be feasible.
+As an example, consider a car trying to parallel park.
+Although a \textit{straight-line} path sideways to the parking spot may be collision free, the car cannot translate sideways and must execute a longer path to reach the parking spot.
+The fact that the car cannot directly move sideways implies that the car is a \textit{non-holonomic} system; the system cannot control its position directly, and has constraints that include terms other than its position.
+This is a key point that differentiates planning between geometric and dynamic problems.
+
+In this project you will plan motions for non-holonomic systems whose dynamics are described by an ordinary differential equation of the form $\dot q = f(q,u),$ where $q$ is a vector describing the current state of the system and $u$ is a vector of control inputs to the system.
+The systems you will plan for are a torque-controlled pendulum and a car-like vehicle moving in a street environment.
+Dynamically feasible and collision-free motions for these systems will be computed using the \abbr{RRT} and \abbr{KPIECE} planners that are already implemented in \abbr{OMPL}.
+Additionally, you will also learn about and implement a new planner called Reachability-Guided \abbr{RRT} (\abbr{RG-RRT}), one of many variants of \abbr{RRT}.
+
+Use your Project~2 and Project~3 \ompl\ environment and the starter in \texttt{template/}:
+\vspace*{-0.5\baselineskip}
+\begin{verbatim}
+micromamba activate ompl_env
+cd project4_2026/template
+make
+\end{verbatim}
+\vspace*{-0.5\baselineskip}
+Read the README for build, run, visualization, and benchmark commands.
+
+\clearpage
+\subsection*{A Torque-controlled Pendulum System}
+
+\begin{wrapfigure}[15]{r}{2.65in}
+	\vspace*{-\baselineskip}\centering
+	\includegraphics[width=2.5in]{pendulum-traj}
+	\caption{A possible solution trajectory for the pendulum in phase space. \textit{From Shkolnik et al.; see below.}}
+	\label{fig:pendulum}
+\end{wrapfigure}
+
+A pendulum is one of the simplest dynamic systems.
+The state $q=(\theta,\omega)$ of the system is described by the orientation of the pendulum ($\theta$) and its rotational velocity ($\omega$).
+Assume that $\theta = 0$ corresponds to the bar of the pendulum being horizontal.
+The objective is to move the pendulum from an initial state of hanging down at rest to a final state of pointing up at rest:
+\begin{align*}
+	(\theta_s, \omega_s) = (-\tfrac{\pi}{2}, 0) &  & \rightarrow &  & (\theta_g, \omega_g) = (+\tfrac{\pi}{2}, 0)
+\end{align*}
+A motor can apply a torque $\tau$ to the axis of rotation of the pendulum.
+The pendulum's dynamics are described by the following differential equation ($g$ is gravity, $\approx 9.81$):
+\begin{equation*}
+	\dot q =
+	\begin{pmatrix}
+		\dot \theta \\
+		\dot\omega
+	\end{pmatrix} =
+	\begin{pmatrix}
+		\omega \\
+		-g \cos\theta + \tau
+	\end{pmatrix}
+\end{equation*}
+When an arbitrarily large torque can be applied, the planning problem is not difficult as the torque can hold the system \emph{quasi-statically} at any configuration.
+Many real manipulators use this strategy and utilize very large torques, allowing them to plan geometrically.
+However, is this always the case?
+In reality, the pendulum's motor can source only a finite torque.
+
+In your implementation, use 3, 5, and 10 as the absolute value of the upper and lower bounds on the torque limits (i.e., $\tau \in [-3, 3]$ for a torque bound of $3$).
+Use 10 as absolute value of the rotational velocity limit.
+Figure~\ref{fig:pendulum} shows a possible solution on the $(\theta, \omega)$ phase space of the pendulum.
+The start pose is at the center of the spiral and either one of the red circles are valid end poses.
+
+\subsection*{A Car-like system}
+\begin{wrapfigure}{r}{2in}
+	\vspace*{-2\baselineskip}
+	\centering\includegraphics[width=2in]{vehicle-maze}
+	\caption{
+		Vehicle navigating in street environment.
+		\textit{From Shkolnik et al.; see below.}}
+	\label{fig:vehicle}
+\end{wrapfigure}
+
+The second system involves a simple vehicle moving in a street environment, an example of which is shown in Figure~\ref{fig:vehicle}.
+The state of the vehicle is represented by its position ($x, y$), heading $\theta$, and forward velocity $v$:
+\begin{equation*}
+	q=(x,y,\theta,v)
+\end{equation*}
+Note that forward velocity \emph{can} be negative, in which case the car moves in reverse.
+The control inputs to this system $u$ consist of the angular velocity $\omega$ and the forward acceleration of the vehicle $\dot v$,
+\begin{equation*}
+	u= (\omega, \dot v)
+\end{equation*}
+Both terms of $u$ are bounded in magnitude.
+The system dynamics are described by:
+\begin{equation*}
+	\dot q =
+	\begin{pmatrix}
+		\dot x \\
+		\dot y \\
+		\omega \\
+		\dot v
+	\end{pmatrix} =
+	\begin{pmatrix}
+		v \cos\theta \\
+		v \sin\theta \\
+		\omega       \\
+		\dot v
+	\end{pmatrix}
+\end{equation*}
+Similar to the pendulum system, the car cannot source an arbitrarily large acceleration or angular velocity.
+You need to set bounds on the control space to ensure a dynamically feasible trajectory.
+
+\subsection*{Planning for Dynamical Systems}
+The key difference when planning for dynamical systems is that the \textit{input space} of controls must be sampled (a \emph{control space}), along with a duration to apply the control.
+In geometric planning, local motions interpolate configurations without modeling dynamics.
+For dynamical systems, a control input is applied for a prescribed time, and the equations of motion are applied to compute the resulting configuration.
+The planners in \ompl for dynamic systems sample controls that are applied for some small period of time.
+It is thus necessary to integrate the equation $\dot q = f(q,u)$ to get the resulting state.
+\ompl includes support for numerical integration and you ``only'' have to implement $f(q,u)$.
+A detailed example is given at \url{http://ompl.kavrakilab.org/odeint.html}.
+
+Construct each system's state space and a correct \texttt{StateValidityChecker}.
+For the pendulum system, you can assume an environment without obstacles.
+However, the state validity checker must ensure that the angular velocity of the pendulum is within the bounds that you specify.
+Similarly you must verify that the velocity of the vehicle is within the bounds you set.
+For simplicity, you can assume that the vehicle is a point system for collision checking purposes, but the 2D collision checking methods from Project~2 can also be used to add geometry to the vehicle if you wish.
+
+See the \ompl demo programs for some examples of how to put all the different pieces together (available online on OMPL website, on the ``demos'' page).
+Look in particular at \texttt{Rigid body planning with ODESolver and controls}.
+
+\subsection*{Reachability-guided RRT}
+An article by Shkolnik et al.\ (2009) proposes a motion planning algorithm for dynamic systems.
+The authors propose that an \abbr{RRT} should only be grown towards a random state that is likely to be \emph{reachable} from its nearest neighbor in the tree.
+For dynamic systems, states that are near a given state are not always easily reachable.
+For instance, vehicle systems cannot easily move sideways.
+You will use the information in their article (summarized below) to understand the problem and the performance characteristics of the systems they assessed.
+Next, you will implement the motion planner they describe, the \textit{reachability-guided \abbr{RRT}} (\abbr{rg-rrt}) and test its performance.
+
+The main change of \abbr{rg-rrt} over \abbr{rrt} is that for each state $q$ in the tree, an approximation of the \emph{reachable set} of states, $R(q)$, is maintained.
+The reachable set $R(q)$ is the set of states the system can arrive at, starting at state $q$, after applying any valid control(s) for a small period of time (a fixed value you set).
+You can approximate $R(q)$ by choosing a small number of controls and computing the states that were reached after applying them for a short duration.
+For the pendulum you should pick 11 evenly spaced values for $\tau$ between the torque limits (i.e., \{-10, -8, \dots, 8, 10\}).
+For the car you can do the same for $u_0$ (you can ignore $u_1$ for the reachable set).
+Next, apply each of the controls to the start state $q$ for a small time step to obtain $R(q)$ (use the \texttt{SpaceInformation::propagate} method for this).
+You can store the reachable set approximation by extending \texttt{Motion} objects (such as those in \abbr{RRT}) to also store the reachable set (as a vector of states).
+You can assume for this project that the control space is a \texttt{RealVectorControlSpace} with bounds.
+Please make sure you write your assumptions in your report.
+
+% The next step is to modify nearest neighbor queries.
+The next step is to determine which node to choose to expand the tree.
+Given a random state $q_\text{rand}$, you need to first find the state $q_\text{near}$ that is closest to $q_\text{rand}$.
+Then, you must check if there exists a state in $R(q_\text{near})$ that is closer to $q_\text{rand}$ than $q_\text{near}$.
+If $q_\text{near}$ is closer to $q_\text{rand}$ than any state in $R(q_\text{near})$, discard $q_\text{rand}$ and repeat.
+Otherwise, $q_\text{near}$ should be chosen to expand the tree.
+
+% An easy strategy is to use the \texttt{NearestNeighborLinear} data structure that contains \texttt{Motion} objects (such as those in \abbr{RRT}) with a special distance function (as described above) that you need to write.
+% This distance function returns the distance between two states $q_0$ and $q_1$ when $q_1$ is reachable from $q_0$ (i.e., there exists a state in $q^r\in R(q_0)$ that is closer to $q_1$ than $q_0$ is to $q_1$) and returns $\infty$ otherwise.
+% Note that the reachability set is \emph{only} used for nearest neighbor queries.
+
+To implement \abbr{rg-rrt}, start with \ompl's control-based \abbr{RRT} implementation:
+\url{https://github.com/ompl/ompl/tree/main/src/ompl/control/planners/rrt}.
+
+\subsection*{Projections}
+\abbr{KPIECE} (among other planners) requires the definition of a projection for the state space being planned in.
+\abbr{KPIECE} uses the projection to estimate how well different parts of the state space have been sampled.
+For the existing state spaces in \ompl a projection is already defined; however, a good projection often requires some information about the specific robot and task.
+Although projections are generally a reduction in dimension, projections in \ompl do not have a limit on how many dimensions you wish to define nor do they require that you chose a subset of the dimensions in your state space.
+
+For example, one of the dimensions in your projection could even be the Cartesian position of some point on the robot.
+Often times, a desirable projection might be one which has a strong correlation with progress toward the goal or indication of greater coverage in the workspace.
+With control spaces, such a projection usually includes some information from the dynamic dimensions in the state.
+
+\subsection*{Project exercises}
+\begin{enumerate*}
+	\item
+	      Implement the state validity checker and differential equations for the pendulum and the vehicle systems described above.
+	      Solve the motion planning problems described for these systems using the \abbr{RRT} planner.
+	      Visualize the solution paths to make sure they are correct and to compare the solution paths found using torque values of 3, 5, and 10 for the pendulum problem.
+
+	\item
+	      Extend the program from \#1 to solve the pendulum and the vehicle problems using the \abbr{kpiece} planner.
+	      You will need to define a projection for the state spaces you create for the pendulum and the car.
+	      See \url{http://ompl.kavrakilab.org/projections.html} for details on how to define a projection and associate it with a state space.
+
+	\item
+	      Implement \abbr{rg-rrt} (see Shkolnik et al., 2009) and solve the pendulum and vehicle problems as in \#1 and \#2.
+	      Make sure to visualize the solution paths.
+
+	\item
+	      Compare your \abbr{rg-rrt} against \abbr{rrt} and \abbr{kpiece} using the \ompl \texttt{Benchmark} class for both the car and pendulum environments.
+	      Use a torque value of 3 for the pendulum.
+	      Any conclusions must come from at least 20 independent runs of each planner.
+\end{enumerate*}
+
+\subsection*{Protips}
+\begin{itemize*}
+	\item %
+	      Be sure to use the \texttt{ompl::control} namespace instead of \texttt{ompl::geometric} in this project.
+	      This includes the \texttt{SimpleSetup} class and all of the planners.
+	\item %
+	      Solution paths from the \textit{control-based} planners in \ompl contain more information than their geometric counterpart.
+	      You can ``geometrize'' a controlled path using the \texttt{asGeometric} method.
+	      This returns a \texttt{PathGeometric} object; export its states with \texttt{printAsMatrix()} to plot the pendulum's phase-space path or the car's path over the street obstacles.
+	\item %
+	      Make sure to perform state validity checking for the reachable set in your \abbr{rg-rrt} implementation.
+	      If a state is not valid, it certainly is not \textit{reachable}.
+	\item %
+	      It is \emph{highly} unlikely that a control-based planner will be able to find a goal configuration exactly.
+	      Think about why this is the case.
+	      The call to \texttt{SimpleSetup.setStartAndGoalStates()} has a third parameter that defines an acceptable radius around the goal state.
+	      Any state that is within this radius will be considered an exact goal state.
+	      You will need to play with this parameter to successfully plan.
+	      % \item %
+	      %   Generally, geometric planners (such as \abbr{rrt} and your Random Tree Planner from the last assigment) use \texttt{NearestNeighborsGNAT}, which requires a distance function that is a \emph{metric}.
+	      %   However, for \abbr{rg-rrt}, the distance defined by the reachability set ($\infty$ if it cannot be reached) is assymetric which breaks the necessary metric properties to use \texttt{NearestNeighborsGNAT}.
+	      %   For this reason, you must use \texttt{NearestNeighborLinear} to build a nearest-neighbor structure for \abbr{rg-rrt}.
+	\item %
+	      In this exercise you will have to generate new states for the reachability set of a state.
+	      To do this, you want to apply some control to an existing state.
+	      You can allocate controls by allocating new controls from \texttt{ompl::control::SpaceInformation} using \texttt{allocControl}.
+	      Just like with states, you can cast controls to their control type defined in the control space.
+	      For example, \texttt{RealVectorControlSpace} has \texttt{RealVectorControlSpace::ControlType}.
+	      Use \texttt{ompl::control::SpaceInformation} to generate new states through \texttt{propagate}, which applies a control to get a new state.
+	\item The starter's 2D collision checkers accept numeric coordinates. Extract $x$ and $y$ from the car's state and pass them to \texttt{isValidPoint}; for a square vehicle, also pass its heading and side length to \texttt{isValidSquare}. Check velocity and state-space bounds separately.
+
+\end{itemize*}
+
+\subsection*{Deliverables}
+This project can be completed in groups of up to 3 people. {\bf We strongly encourage groups of 2 or 3 people - this is a hard assignment.} With your submission, please include the contribution of each member of the group.  When grading this project,
+we may ask groups to come and talk to the TAs and the instructor. In that case we will ask each member of the group questions related to their individual contributions.
+
+
+%Please take into account the following rules:
+%\begin{itemize}
+%  \item Regardless of group size, students will be graded individually according to their contribution to the project. The number of people in the group will be taken into account when grading the projects (hence groups of 1 will not be penalized, a student taking a class P/F will not negatively affect the grade of the other people in the group).
+%  \item For groups of more than 1, each student must send a private email to the TAs describing in detail their own contribution to the project.
+%  \item At the moment of grading, we will be contacting students individually to ask specific questions of the project, according to their expressed contribution.
+%\end{itemize}
+
+%The submission of this project is divided into three stages (only the first two are required for the graduate students).
+
+\begin{enumerate}
+	\item We are setting a check point \textbf{due Thursday October 29, 2026 at 1pm}. You need to finish Project exercise 1 and 2. That means you need to fill in \texttt{Project4Car.cpp} and \texttt{Project4Pendulum.cpp}, except for the part related to \abbr{RG-RRT} and benchmarking. Your code should be able to do motion planning with \abbr{RRT} and \abbr{KPIECE} with the pendulum and the vehicle systems. You can also submit what you have implemented for \abbr{RG-RRT}, even it is half-done, but make sure your code compiles. You are also expected to attach a report in \textsc{PDF} format, no more than 1 page, showing the images of your environments with example paths generated by \abbr{RRT} and \abbr{KPIECE}. Make sure you describe the images clearly.
+
+	\item \textbf{The final submissions are due Tuesday November 10, 2026 at 1pm}. At this point, you are expected to finish the whole project, and submit the final report. Your code can change from what you submitted for the check point, as for the check point, we grade more on your effort, not the quality. If you are a graduate student, you have finished this project.
+
+	\item For \textbf{undergraduate students} only, you will need to submit the slides and recording of your presentation \textbf{due Tuesday November 17, 2026 at 1pm}. Please submit the slides on Canvas, and email your video recording of the presentation to the TAs.
+	      The presentation should be at most 10 slides and 5-7 mins long.
+	      It should concentrate on the solution and description of the results. Feel free to include what you think you have done well and/or what you found difficult in this project.
+	      Note the graduate students are not required to do presentation/slides for this project. If your team has both undergraduate and graduate students, the graduate students are welcome to help with the presentation/slides.
+
+\end{enumerate}
+
+To make the \textbf{check point} submission, clean your build space with \texttt{make clean}, zip up the project directory into a file named \texttt{Project4\_Checkpoint\_<your NetID>\_<partner's NetID>.zip}, and submit to Canvas.
+To make the \textbf{final} submission, clean your build space with \texttt{make clean}, zip up the project directory into a file named \texttt{Project4\_<your NetID>\_<partner's NetID>.zip}, and submit to Canvas.
+Your code must compile and run in a modern Linux environment with the course's \ompl\ environment.
+If you deem it necessary, also include a \textsc{readme} with details on compiling and executing your code.
+In addition to the archive, submit a short final report that summarizes your experience from this project.
+The report should be anywhere from 1 to 5 pages in length in \textsc{PDF} format, and contain the following information:
+
+\begin{itemize*}\vspace*{-\baselineskip}
+	\item \textbf{(4 points)}
+	      A succinct statement of the problem that you solved.
+	\item \textbf{(2 points)}
+	      Images of your environments and a description of the start-goal queries you are evaluating.
+	\item \textbf{(2 points)}
+	      A short description of the robots (their geometry) and configuration and state spaces.
+	\item \textbf{(10 points)}
+	      Explain the differences in solution paths when torque is limited to 3, 5, and 10 for the pendulum problem.
+	\item \textbf{(10 points)}
+	      A summary of benchmarking data for the \abbr{rrt}, \abbr{kpiece} and \abbr{rg-rrt} planners for both systems.
+	      Use a torque value of 3 for the pendulum for the other benchmark and comparison exercises.
+	      This data must be presented in a quantitative manner (i.e., plots or tables) and any conclusions must be supported from this data.
+	      Consider the following metrics: computation time, path length, number of tree nodes, and success rate.
+	      When referencing benchmarking results you must include the referenced data as figures.
+	\item \textbf{(10 points)}
+	      A head-to-head comparison of \abbr{RRT} and \abbr{RG-RRT}.
+	      Discuss the performance trade-offs of \abbr{RG-RRT} for computing reachable states in terms of the \emph{length} of the time period and the \emph{number} of controls.
+	      Support your claims with images and/or benchmark data.
+	\item \textbf{(2 points)}
+	      Rate the difficulty of each exercise on a scale of 1--10 (1 being trivial, 10 being impossible).
+	      Give an estimate of how many hours you spent on each exercise, and detail what was the hardest part of the assignment.
+	      % {\bf Additionally}, describe your individual contribution to the project.
+\end{itemize*}
+
+Additionally, you will be graded upon your implementation.
+Your code must compile, run, and solve the problem correctly.
+Correctness of the implementation is paramount, but succinct, well-organized, well-written, and well-documented code is also taken into consideration.
+Visualization is an important component of providing evidence that your code is functioning properly.
+The breakdown of the grading of the implementation is as follows:
+\begin{itemize*}
+	\vspace{-\baselineskip}
+	\item \textbf{(35 points)} RG-RRT
+	\item \textbf{(10 points)} Pendulum Problem
+	\item \textbf{(10 points)} Car Problem
+	\item \textbf{(5 points)} Benchmark
+	      \vspace{-\baselineskip}
+\end{itemize*}
+
+Each team need only provide one submission.
+%For groups of more than 1, each student must send a private email to the TAs describing in detail their own contribution to the project.
+
+\subsection*{Reference}
+A. Shkolnik, M. Walter, and R. Tedrake, Reachability-guided sampling for planning under differential constraints, in \emph{IEEE Intl. Conf. on Robotics and Automation}, pp.~2859--2865, 2009. \url{http://dx.doi.org/10.1109/ROBOT.2009.5152874}, \url{http://dspace.mit.edu/openaccess-disseminate/1721.1/61653}
+
+\end{document}
