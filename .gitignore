@@ -13,3 +13,4 @@ project4/project4_2026/Project4Pendulum
 # Project 4 planner logs and OMPL benchmark logs are results.
 !project4/project4_2026/results/*.log
 !project4/project4_2026/results/benchmark/*.log
+!project4/project4_2026/results/benchmark/sequential_car_study/*.log
