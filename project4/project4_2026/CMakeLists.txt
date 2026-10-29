@@ -29,7 +29,7 @@ set_target_properties(Project4Car Project4Pendulum PROPERTIES
 
 include(CTest)
 if(BUILD_TESTING)
-  add_executable(check_models src/check_models.cpp src/CollisionChecking.cpp)
+  add_executable(check_models src/check_models.cpp src/CollisionChecking.cpp src/RG-RRT.cpp)
   target_link_libraries(check_models PRIVATE ompl::ompl)
   add_test(NAME models COMMAND check_models)
 endif()

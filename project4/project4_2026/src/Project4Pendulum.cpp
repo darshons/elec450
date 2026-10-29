@@ -35,9 +35,28 @@ oc::SimpleSetupPtr createPendulum(double torque) {
     ss->setStartAndGoalStates(start,goal,0.15);
     return ss;
 }
+void planPendulum(oc::SimpleSetupPtr &ss, int choice) {
+    Options o; o.planner=plannerName(choice); o.output="pendulum_path.json";
+    plan(ss,o,"pendulum");
+}
+void benchmarkPendulum(oc::SimpleSetupPtr &ss) {
+    Options o; o.seconds=30; benchmark(ss,o,"pendulum");
+}
 #ifndef PROJECT4_NO_MAIN
 int main(int argc,char **argv) {
-    try { auto o=options(argc,argv,true); ompl::RNG::setSeed(o.seed); auto ss=createPendulum(o.torque); return plan(ss,o,"pendulum"); }
+    try {
+        if (argc > 1) { // scripted runs: see --help
+            auto o=options(argc,argv); ompl::RNG::setSeed(o.seed); auto ss=createPendulum(o.torque);
+            return o.benchmark ? benchmark(ss,o,"pendulum") : plan(ss,o,"pendulum");
+        }
+        int choice=menu("Plan or Benchmark? \n (1) Plan\n (2) Benchmark\n",1,2);
+        int which=menu("Torque? \n (1)  3\n (2)  5\n (3) 10\n",1,3);
+        const double torques[]={3.,5.,10.};
+        auto ss=createPendulum(torques[which-1]);
+        if (choice==1) planPendulum(ss,menu("What Planner? \n (1) RRT\n (2) KPIECE1\n (3) RG-RRT\n",1,3));
+        else benchmarkPendulum(ss);
+        return 0;
+    }
     catch(const std::exception &e) { std::cerr << e.what() << '\n'; return 1; }
 }
 #endif

@@ -7,3 +7,10 @@ __pycache__/
 !project3/project3_2026/results/**/*_logs/*.log
 !project3/project3_2026/results/*_logs/*.log
 *.out
+*.console
+project4/project4_2026/Project4Car
+project4/project4_2026/Project4Pendulum
+# Project 4 planner logs and OMPL benchmark logs are results.
+!project4/project4_2026/results/*.log
+!project4/project4_2026/results/benchmark/*.log
+!project4/project4_2026/results/benchmark/sequential_car_study/*.log

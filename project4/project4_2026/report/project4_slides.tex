@@ -1,0 +1,116 @@
+\documentclass[aspectratio=169,10pt]{beamer}
+\usetheme{default}
+\usecolortheme{dove}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\usepackage{booktabs}
+\title{Project 4: Out of Control Planning}
+\subtitle{RRT, KPIECE1 and Reachability-Guided RRT for a pendulum and a car}
+\author{Darshon Singh (ds161) \and Winson Lin (wl85)}
+\date{COMP/ELEC/MECH 450/550 --- Fall 2026}
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Problem: planning with dynamics, $\dot q=f(q,u)$}
+\begin{columns}[T]
+\column{0.5\textwidth}
+\textbf{Torque-limited pendulum}
+\begin{itemize}
+\item $q=(\theta,\omega)\in S^1\times[-10,10]$
+\item $\dot\theta=\omega,\ \dot\omega=-9.81\cos\theta+\tau$
+\item $|\tau|\le 3,5,10$; no obstacles
+\item hanging $(-\pi/2,0)\ \to$ upright $(\pi/2,0)$
+\end{itemize}
+\column{0.5\textwidth}
+\textbf{Car in a street}
+\begin{itemize}
+\item $q=(x,y,\theta,v)\in SE(2)\times[-2,2]$
+\item $(\dot x,\dot y,\dot\theta,\dot v)=(v\cos\theta,v\sin\theta,\omega,\dot v)$
+\item $|\omega|,|\dot v|\le1$; reverse allowed; point robot
+\item $(1,1)\to(11,9)$ through alternating gaps
+\end{itemize}
+\end{columns}
+\vspace{6pt}
+OMPL \texttt{control}: sample control + duration (0.02--0.5\,s), integrate with RK4, check validity every 0.02\,s.
+Goals are balls (0.15 pendulum, 0.5 car): a control planner never hits a state exactly.
+\end{frame}
+
+\begin{frame}{Example solutions (all independently re-integrated and checked)}
+\centering
+\includegraphics[height=0.86\textheight]{fig/all_paths.pdf}
+\end{frame}
+
+\begin{frame}{Torque limits change the strategy}
+\begin{itemize}
+\item Holding still at $\theta$ needs $\tau=9.81\cos\theta$.
+\item $|\tau|\le10>9.81$: can hold any angle $\Rightarrow$ lift almost directly (2--3 velocity reversals).
+\item $|\tau|\le5$ or $3$: cannot hold the bar near horizontal $\Rightarrow$ must \emph{pump energy} by swinging.
+\item Energy must rise by $2\cdot9.81$; one swing adds $\lesssim\pi\tau_{\max}$ $\Rightarrow$ $\ge$3, 2, 1 swings.
+\item Observed: 7--8 reversals at $\tau=3$, 3--5 at $\tau=5$; durations grow as torque shrinks.
+\end{itemize}
+\vspace{4pt}
+\centering\small\input{report/torque_table.tex}
+\end{frame}
+
+\begin{frame}{RG-RRT: only grow towards samples the node can actually reach}
+\begin{enumerate}
+\item Every node stores $R(q)$: end states of $k$ evenly spaced controls applied for $s$ steps
+      (\texttt{propagateWhileValid}; invalid $\Rightarrow$ not reachable).
+\item Sample $q_\text{rand}$, find nearest $q_\text{near}$.
+\item If no $r\in R(q_\text{near})$ is closer to $q_\text{rand}$ than $q_\text{near}$: \textbf{discard} and resample.
+\item Else extend $q_\text{near}$ towards $q_\text{rand}$ as in RRT; compute $R$ of the new node.
+\end{enumerate}
+\vspace{4pt}
+Assumptions: bounded \texttt{RealVectorControlSpace}; $k$ controls span $u_0$ (torque / steering rate), other inputs at the centre
+(car $\dot v=0$). Default $k=11$, $s=5$ (0.1\,s).
+\end{frame}
+
+\begin{frame}{Benchmark: RRT vs.\ KPIECE1 vs.\ RG-RRT}
+\centering
+\includegraphics[width=\textwidth]{fig/bench_main.pdf}
+\end{frame}
+
+\begin{frame}{Benchmark summary}
+\centering
+\resizebox{\textwidth}{!}{\input{report/bench_table.tex}}
+\vspace{8pt}
+\begin{itemize}\normalsize
+\item Pendulum: everyone solves 100\%; KPIECE1 fastest (projection = full state), but longest trajectories.
+\item Car: RRT best (80\%, median 17\,s); RG-RRT 64\%; KPIECE1 36\% (coverage spreads over 3800 cells).
+\item RG-RRT always builds the smallest tree (car: 9.5k vs.\ 25k nodes).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{RG-RRT trade-offs: number of controls and time period}
+\centering
+\includegraphics[width=0.98\textwidth]{fig/bench_rg_study.pdf}
+\end{frame}
+
+\begin{frame}{Head-to-head conclusions}
+\begin{itemize}
+\item \textbf{Buys:} 1.3--3$\times$ smaller trees; 50--80\% of samples rejected as unreachable.
+\item \textbf{Costs:} $k\cdot s$ extra propagation steps per node (55 vs.\ $\approx$13 for an RRT extension) $\Rightarrow$ slower in
+      wall-clock time than RRT on both systems.
+\item \textbf{Controls $k$:} benefit saturates at $k=3$ (bang--zero--bang); time grows linearly (pendulum 0.8\,s $\to$ 2.6\,s for
+      $k=3\to21$). Car $3\times5$: best variant, 90\% success.
+\item \textbf{Period $s$:} 1--2 steps cheap and good; 10 steps $\Rightarrow$ 53\% / 40\% success, 20 steps $\Rightarrow$ 0\%:
+      $R(q)$ overshoots, nearby (and goal) samples get discarded, no fine corrections.
+\item \textbf{Verdict:} keep reachable sets cheap and local; for these systems plain RRT is still faster.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What went well, what was hard}
+\begin{itemize}
+\item \textbf{Went well:} independent SciPy replay of every saved control path (bounds, collisions, goal) caught modelling
+      mistakes early; one shared planning/benchmark layer for both systems.
+\item \textbf{Hard:} tuning goal radii, propagation step and control durations so the planners succeed reliably;
+      choosing the reachable-set duration --- too short and $R(q)$ is indistinguishable from $q$, too long and it overshoots.
+\item \textbf{Takeaway:} reachability guidance trades extra propagation per node for fewer, better-directed nodes; whether that
+      pays off depends on the system and on $k$ and $s$.
+\end{itemize}
+\end{frame}
+
+\end{document}

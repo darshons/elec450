@@ -34,5 +34,10 @@ int main() {
     require(!isValidSquare(1.5,0.5,0,1,box) && isValidSquare(1.51,0.5,0,1,box),"Square tangency");
     require(!isValidSquare(1.6,0.5,PI/4,1,box),"Rotated square collision");
     require(isValidSquare(2,2,PI/4,1,box),"Rotated square separated");
+    // RG-RRT end to end: the reachable-set controls span the torque bounds and an exact, valid path is found.
+    auto rg=createPendulum(10); Options o; o.planner="RG-RRT"; o.rgControls=11; o.rgSteps=5;
+    rg->setPlanner(makePlanner(rg->getSpaceInformation(),o.planner,o)); rg->setup();
+    require(rg->solve(20)==ob::PlannerStatus::EXACT_SOLUTION && rg->getSolutionPath().check(),"RG-RRT solves pendulum");
+    require(rg->getPlanner()->params().getParam("reachable_controls")->getValue()=="11","RG-RRT parameter");
     std::cout << "All model checks passed\n";
 }

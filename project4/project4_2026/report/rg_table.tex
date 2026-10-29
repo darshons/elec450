@@ -1,0 +1,17 @@
+\begin{tabular}{lrrrrrr}\toprule
+System / planner & runs & success & \multicolumn{2}{c}{time (s): median, mean} & duration (s) & tree nodes \\ \midrule
+Pendulum RRT & 30 & 100\% & 0.79 & 0.89 & 8.42 & 2218 \\
+Pendulum RG-RRT 3 ctrl, 5 steps & 30 & 100\% & 0.79 & 1.06 & 8.94 & 727 \\
+Pendulum RG-RRT 5 ctrl, 5 steps & 30 & 100\% & 0.87 & 0.94 & 9.55 & 740 \\
+Pendulum RG-RRT 11 ctrl, 5 steps$^*$ & 30 & 100\% & 1.47 & 1.73 & 8.54 & 690 \\
+Pendulum RG-RRT 21 ctrl, 5 steps & 30 & 100\% & 2.59 & 3.22 & 9.23 & 754 \\
+Pendulum RG-RRT 11 ctrl, 1 step & 30 & 100\% & 1.06 & 1.42 & 7.75 & 1034 \\
+Pendulum RG-RRT 11 ctrl, 2 steps & 30 & 100\% & 1.22 & 1.58 & 7.98 & 774 \\
+Pendulum RG-RRT 11 ctrl, 10 steps & 30 & 53\% & 15.01 & 16.75 & 9.00 & 836 \\
+Pendulum RG-RRT 11 ctrl, 20 steps & 30 & 0\% & 30.09 & 30.08 & --- & 916 \\
+Car RRT & 20 & 80\% & 13.52 & 22.53 & 47.41 & 19928 \\
+Car RG-RRT 3 ctrl, 5 steps & 20 & 90\% & 20.57 & 27.37 & 44.52 & 13338 \\
+Car RG-RRT 11 ctrl, 5 steps & 20 & 75\% & 49.28 & 39.97 & 44.50 & 14058 \\
+Car RG-RRT 11 ctrl, 2 steps & 20 & 80\% & 37.39 & 35.12 & 47.37 & 21042 \\
+Car RG-RRT 11 ctrl, 10 steps & 20 & 40\% & 60.01 & 46.80 & 45.57 & 9668 \\
+\bottomrule\end{tabular}
