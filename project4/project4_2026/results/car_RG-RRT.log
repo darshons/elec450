@@ -1,0 +1,4 @@
+Info:    RG-RRT: Starting planning with 1 states already in datastructure
+Info:    RG-RRT: Created 28436 states, discarded 28282 samples
+Info:    Solution found in 172.466371 seconds
+Saved exact solution to car_RG-RRT.json

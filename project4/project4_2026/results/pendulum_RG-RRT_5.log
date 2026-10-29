@@ -1,0 +1,4 @@
+Info:    RG-RRT: Starting planning with 1 states already in datastructure
+Info:    RG-RRT: Created 977 states, discarded 4303 samples
+Info:    Solution found in 2.942281 seconds
+Saved exact solution to pendulum_RG-RRT_5.json

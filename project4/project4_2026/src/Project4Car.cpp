@@ -44,9 +44,27 @@ oc::SimpleSetupPtr createCar(const std::vector<Rectangle> &obstacles) {
     ss->setStartAndGoalStates(start,goal,0.5);
     return ss;
 }
+void planCar(oc::SimpleSetupPtr &ss, int choice) {
+    Options o; o.planner=plannerName(choice); o.seconds=120; o.output="car_path.json";
+    plan(ss,o,"car");
+}
+void benchmarkCar(oc::SimpleSetupPtr &ss) {
+    Options o; o.seconds=60; benchmark(ss,o,"car");
+}
 #ifndef PROJECT4_NO_MAIN
 int main(int argc,char **argv) {
-    try { auto o=options(argc,argv,false); ompl::RNG::setSeed(o.seed); std::vector<Rectangle> obs; makeStreet(obs); auto ss=createCar(obs); return plan(ss,o,"car"); }
+    try {
+        std::vector<Rectangle> obs; makeStreet(obs);
+        if (argc > 1) { // scripted runs: see --help
+            auto o=options(argc,argv); ompl::RNG::setSeed(o.seed); auto ss=createCar(obs);
+            return o.benchmark ? benchmark(ss,o,"car") : plan(ss,o,"car");
+        }
+        int choice=menu("Plan or Benchmark? \n (1) Plan\n (2) Benchmark\n",1,2);
+        auto ss=createCar(obs);
+        if (choice==1) planCar(ss,menu("What Planner? \n (1) RRT\n (2) KPIECE1\n (3) RG-RRT\n",1,3));
+        else benchmarkCar(ss);
+        return 0;
+    }
     catch(const std::exception &e) { std::cerr << e.what() << '\n'; return 1; }
 }
 #endif

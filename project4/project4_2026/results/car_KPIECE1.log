@@ -1,0 +1,6 @@
+Info:    KPIECE1: Attempting to use default projection.
+Info:    KPIECE1: Starting planning with 1 states already in datastructure
+Info:    ProblemDefinition: Adding approximate solution from planner KPIECE1
+Info:    KPIECE1: Created 40811 states in 2989 cells (1211 internal + 1778 external)
+Info:    Solution found in 60.073290 seconds
+No exact solution: Approximate solution

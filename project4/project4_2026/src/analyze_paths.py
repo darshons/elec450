@@ -1,4 +1,4 @@
-"""Independent SciPy replay, saved-path audit, and checkpoint figures.
+"""Independent SciPy replay, saved-path audit, and path figures (checkpoint and final).
 Run from project4_2026 with: python src/analyze_paths.py
 """
 from pathlib import Path
@@ -62,7 +62,9 @@ def audit(path):
     delta = geometric_replay-dense; delta[:,ai] = wrap(delta[:,ai])
     assert np.max(np.abs(delta)) < 1e-7
     assert cumulative_error < 1e-6
-    assert np.max(np.abs(replay[:,-1])) + .001*(1 if car else 9.81+d['torque']) < (2 if car else 10)
+    # Car speed is linear within a segment, so its extremes are the (sampled) endpoints; pendulum speed can
+    # move by at most .001*(g+torque) between samples .002 s apart.
+    assert np.max(np.abs(replay[:,-1])) + (0 if car else .001*(9.81+d['torque'])) <= (2 if car else 10)
     for points in (states, dense, replay):
         assert np.max(np.abs(points[:,ai])) <= np.pi+1e-10
         assert np.max(np.abs(points[:,-1])) <= (2 if car else 10)+1e-9
@@ -94,7 +96,7 @@ def audit(path):
 
 def main():
     paths=sorted((ROOT/'results').glob('pendulum_*.json'))+sorted((ROOT/'results').glob('car_*.json'))
-    assert len(paths)==8, 'Expected six pendulum paths and two car paths'
+    assert len(paths)==12, 'Expected nine pendulum paths and three car paths'
     records=[]; data={}
     for path in paths:
         d,r=audit(path); records.append(r)
@@ -103,8 +105,13 @@ def main():
     with (ROOT/'results'/'summary.csv').open('w') as f:
         writer=csv.DictWriter(f,fieldnames=records[0].keys()); writer.writeheader(); writer.writerows(records)
     (ROOT/'results'/'validation.json').write_text(json.dumps({'method':'Independent SciPy RK45 adaptive replay, rtol=1e-11, atol=1e-12; samples <=0.002 s. Local and cumulative integration.', 'paths':records},indent=2)+'\n')
-    fig,axes=plt.subplots(2,4,figsize=(10,4.25),layout='constrained')
-    for row,planner in enumerate(['RRT','KPIECE1']):
+    figure(data,['RRT','KPIECE1'],'checkpoint_paths')
+    figure(data,['RRT','KPIECE1','RG-RRT'],'all_paths')
+    print('All twelve paths passed independent validation.')
+
+def figure(data,planners,name):
+    fig,axes=plt.subplots(len(planners),4,figsize=(10,2.12*len(planners)+.0),layout='constrained')
+    for row,planner in enumerate(planners):
         for col,torque in enumerate([3,5,10]):
             d=data['pendulum',planner,torque]; q=np.array(d['dense']); ax=axes[row,col]
             q=q.copy(); q[np.r_[False,abs(np.diff(q[:,0]))>np.pi],:]=np.nan
@@ -119,6 +126,5 @@ def main():
         ax.scatter(1,1,c='#27934b',s=26,zorder=4); ax.scatter(11,9,c='#b42d32',s=38,marker='*',zorder=4)
         ax.set(xlim=(0,12),ylim=(0,10),xlabel='x (m)',ylabel='y (m)',title=f'{planner}, point car',aspect='equal'); ax.grid(alpha=.2)
     (ROOT/'fig').mkdir(exist_ok=True)
-    fig.savefig(ROOT/'fig'/'checkpoint_paths.pdf');fig.savefig(ROOT/'fig'/'checkpoint_paths.png',dpi=180)
-    print('All eight paths passed independent validation.')
+    fig.savefig(ROOT/'fig'/f'{name}.pdf');fig.savefig(ROOT/'fig'/f'{name}.png',dpi=180)
 if __name__=='__main__': main()
