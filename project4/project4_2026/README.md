@@ -137,8 +137,8 @@ approximate and is kept as `results/car_RG-RRT_120s.log`.
 ## Benchmarks
 
 ```bash
-bash src/run_benchmarks.sh results/benchmark   # parallel OMPL Benchmark runs, then benchmark.db
-python src/analyze_benchmarks.py                # summary.csv, fig/bench_*.pdf, report tables
+bash src/run_benchmarks.sh results/benchmark_new   # parallel OMPL Benchmark runs, then benchmark.db
+python src/analyze_benchmarks.py --db results/benchmark_new/benchmark.db
 ```
 
 Experiments (seed in parentheses): pendulum torque 3, RRT/KPIECE1/RG-RRT,
@@ -148,8 +148,9 @@ pendulum torque 5 and 10, 30 runs (5005, 5010). The raw OMPL logs and
 `benchmark.db` are in `results/benchmark/`; the database can also be loaded in
 Planner Arena. Path length in OMPL's control benchmarks is the trajectory
 duration in seconds. Processes ran concurrently on an 8-core laptop, so absolute
-times include some contention; all planners within an experiment ran under the
-same conditions.
+times include contention and CPU load can vary as processes finish. These are
+descriptive results rather than controlled timing comparisons. The runner requires
+a new output directory and checks every subprocess before importing logs.
 
 ## Reports and archive
 
@@ -157,6 +158,9 @@ same conditions.
 pdflatex -output-directory=pdf report/project4_part1_writeup.tex      # checkpoint
 pdflatex -output-directory=pdf report/project4_final_report.tex       # final (run twice)
 pdflatex -output-directory=pdf report/project4_slides.tex             # presentation (run twice)
+# Alternatively, from project4_2026, build PDFs with Tectonic:
+# tectonic -Z search-path=. --outdir pdf report/project4_final_report.tex
+# tectonic -Z search-path=. --outdir pdf report/project4_slides.tex
 make clean
 cd ..
 zip -r Project4_wl85_ds161.zip project4_2026 -x '*/__pycache__/*' '*/.DS_Store' '*/build/*'

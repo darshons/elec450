@@ -4,7 +4,36 @@
 #include "Project4Car.cpp"
 #include <functional>
 void require(bool ok,const char *message) { if(!ok) throw std::runtime_error(message); }
+// Count allocated controls so the planner's cached reachable controls are also checked.
+class CountingControlSpace : public oc::RealVectorControlSpace {
+public:
+    explicit CountingControlSpace(const ob::StateSpacePtr &space) : RealVectorControlSpace(space, 1) {}
+    oc::Control *allocControl() const override { ++liveControls; return RealVectorControlSpace::allocControl(); }
+    void freeControl(oc::Control *control) const override { --liveControls; RealVectorControlSpace::freeControl(control); }
+    mutable int liveControls = 0;
+};
 int main() {
+    ompl::RNG::setSeed(450);
+    {
+        auto stateSpace = std::make_shared<ob::RealVectorStateSpace>(1);
+        ob::RealVectorBounds bounds(1); bounds.setLow(-1); bounds.setHigh(1); stateSpace->setBounds(bounds);
+        auto controls = std::make_shared<CountingControlSpace>(stateSpace); controls->setBounds(bounds);
+        auto info = std::make_shared<oc::SpaceInformation>(stateSpace, controls);
+        info->setStateValidityChecker([](const ob::State *) { return true; });
+        info->setStatePropagator([stateSpace](const ob::State *q, const oc::Control *, double, ob::State *r) {
+            stateSpace->copyState(r, q);
+        });
+        info->setPropagationStepSize(.02); info->setMinMaxControlDuration(1,25); info->setup();
+        {
+            oc::RGRRT planner(info); planner.setup();
+            require(controls->liveControls == 11, "Allocate reachable controls");
+            planner.clear();
+            require(controls->liveControls == 11, "Clear retains controls for benchmark reuse");
+            planner.setup();
+            require(controls->liveControls == 11, "Repeated setup replaces reachable controls");
+        }
+        require(controls->liveControls == 0, "Planner destruction frees reachable controls");
+    }
     auto pend=createPendulum(3); pend->setup(); auto si=pend->getSpaceInformation();
     auto *u=si->allocControl(); auto *uv=u->as<oc::RealVectorControlSpace::ControlType>();
     uv->values[0]=0; oc::ODESolver::StateType dq;
@@ -39,5 +68,7 @@ int main() {
     rg->setPlanner(makePlanner(rg->getSpaceInformation(),o.planner,o)); rg->setup();
     require(rg->solve(20)==ob::PlannerStatus::EXACT_SOLUTION && rg->getSolutionPath().check(),"RG-RRT solves pendulum");
     require(rg->getPlanner()->params().getParam("reachable_controls")->getValue()=="11","RG-RRT parameter");
+    rg->clear();
+    require(rg->solve(20)==ob::PlannerStatus::EXACT_SOLUTION && rg->getSolutionPath().check(),"RG-RRT solves again after clear");
     std::cout << "All model checks passed\n";
 }

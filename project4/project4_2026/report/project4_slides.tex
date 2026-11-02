@@ -35,7 +35,7 @@
 \end{columns}
 \vspace{6pt}
 OMPL \texttt{control}: sample control + duration (0.02--0.5\,s), integrate with RK4, check validity every 0.02\,s.
-Goals are balls (0.15 pendulum, 0.5 car): a control planner never hits a state exactly.
+Goals are balls (0.15 pendulum, 0.5 car): exact state hits have negligible probability under continuous random sampling.
 \end{frame}
 
 \begin{frame}{Example solutions (all independently re-integrated and checked)}
@@ -48,14 +48,14 @@ Goals are balls (0.15 pendulum, 0.5 car): a control planner never hits a state e
 \item Holding still at $\theta$ needs $\tau=9.81\cos\theta$.
 \item $|\tau|\le10>9.81$: can hold any angle $\Rightarrow$ lift almost directly (2--3 velocity reversals).
 \item $|\tau|\le5$ or $3$: cannot hold the bar near horizontal $\Rightarrow$ must \emph{pump energy} by swinging.
-\item Energy must rise by $2\cdot9.81$; one swing adds $\lesssim\pi\tau_{\max}$ $\Rightarrow$ $\ge$3, 2, 1 swings.
+\item Energy must rise by $2\cdot9.81$; $\dot E=\tau\omega$. Smaller torque needs more angular travel to supply this work.
 \item Observed: 7--8 reversals at $\tau=3$, 3--5 at $\tau=5$; durations grow as torque shrinks.
 \end{itemize}
 \vspace{4pt}
 \centering\small\input{report/torque_table.tex}
 \end{frame}
 
-\begin{frame}{RG-RRT: only grow towards samples the node can actually reach}
+\begin{frame}{RG-RRT: filter samples using approximate local reachability}
 \begin{enumerate}
 \item Every node stores $R(q)$: end states of $k$ evenly spaced controls applied for $s$ steps
       (\texttt{propagateWhileValid}; invalid $\Rightarrow$ not reachable).
@@ -76,11 +76,12 @@ Assumptions: bounded \texttt{RealVectorControlSpace}; $k$ controls span $u_0$ (t
 \begin{frame}{Benchmark summary}
 \centering
 \resizebox{\textwidth}{!}{\input{report/bench_table.tex}}
-\vspace{8pt}
+\vspace{4pt}
+{\scriptsize 30 pendulum / 25 car runs per planner; 30 / 60\,s limits. Concurrent runs: CPU load can vary.}\par
 \begin{itemize}\normalsize
 \item Pendulum: everyone solves 100\%; KPIECE1 fastest (projection = full state), but longest trajectories.
-\item Car: RRT best (80\%, median 17\,s); RG-RRT 64\%; KPIECE1 36\% (coverage spreads over 3800 cells).
-\item RG-RRT always builds the smallest tree (car: 9.5k vs.\ 25k nodes).
+\item Car: RRT best (80\%, median 17\,s); RG-RRT 64\%; KPIECE1 36\% (projection has roughly 3800 possible cells).
+\item Default RG-RRT builds the smallest median tree here (car: 9.5k vs.\ 25k nodes).
 \end{itemize}
 \end{frame}
 
@@ -91,12 +92,12 @@ Assumptions: bounded \texttt{RealVectorControlSpace}; $k$ controls span $u_0$ (t
 
 \begin{frame}{Head-to-head conclusions}
 \begin{itemize}
-\item \textbf{Buys:} 1.3--3$\times$ smaller trees; 50--80\% of samples rejected as unreachable.
-\item \textbf{Costs:} $k\cdot s$ extra propagation steps per node (55 vs.\ $\approx$13 for an RRT extension) $\Rightarrow$ slower in
+\item \textbf{Buys:} 1.3--3$\times$ smaller trees; 50--80\% of samples rejected by the reachable-set test.
+\item \textbf{Costs:} $k\cdot s$ extra propagation steps per node (up to 55 vs.\ $\approx$13 for an RRT extension) $\Rightarrow$ slower in
       wall-clock time than RRT on both systems.
 \item \textbf{Controls $k$:} benefit saturates at $k=3$ (bang--zero--bang); time grows linearly (pendulum 0.8\,s $\to$ 2.6\,s for
       $k=3\to21$). Car $3\times5$: best variant, 90\% success.
-\item \textbf{Period $s$:} 1--2 steps cheap and good; 10 steps $\Rightarrow$ 53\% / 40\% success, 20 steps $\Rightarrow$ 0\%:
+\item \textbf{Period $s$:} 1--2 steps cheap and good; 10 steps $\Rightarrow$ 53\% / 40\% success, 20 steps $\Rightarrow$ 0\% on pendulum:
       $R(q)$ overshoots, nearby (and goal) samples get discarded, no fine corrections.
 \item \textbf{Verdict:} keep reachable sets cheap and local; for these systems plain RRT is still faster.
 \end{itemize}
@@ -104,8 +105,7 @@ Assumptions: bounded \texttt{RealVectorControlSpace}; $k$ controls span $u_0$ (t
 
 \begin{frame}{What went well, what was hard}
 \begin{itemize}
-\item \textbf{Went well:} independent SciPy replay of every saved control path (bounds, collisions, goal) caught modelling
-      mistakes early; one shared planning/benchmark layer for both systems.
+\item \textbf{Went well:} independent SciPy replay of every saved control path (bounds, collisions, goal) validated the models and saved paths; one shared planning/benchmark layer for both systems.
 \item \textbf{Hard:} tuning goal radii, propagation step and control durations so the planners succeed reliably;
       choosing the reachable-set duration --- too short and $R(q)$ is indistinguishable from $q$, too long and it overshoots.
 \item \textbf{Takeaway:} reachability guidance trades extra propagation per node for fewer, better-directed nodes; whether that

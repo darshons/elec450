@@ -1,14 +1,18 @@
 # COMP/ELEC/MECH 450/550 - Project 4 (2026)
 
-## Completed Part 1 checkpoint
+## Completed final submission
 
-- Submission ZIP: [Project4_Checkpoint_wl85_ds161.zip](Project4_Checkpoint_wl85_ds161.zip)
-- One-page report: [project4_part1_writeup.pdf](project4_part1_writeup.pdf)
-- Implementation, saved paths, verification and reproduction instructions:
+- Final archive: [Project4_wl85_ds161.zip](Project4_wl85_ds161.zip)
+- Final report: [project4_final_report.pdf](project4_2026/pdf/project4_final_report.pdf)
+- Presentation (10 slides): [project4_slides.pdf](project4_2026/pdf/project4_slides.pdf)
+- Code, saved paths, benchmarks and reproduction instructions:
   [project4_2026/README.md](project4_2026/README.md)
+- Validation record: [REVIEW.md](project4_2026/REVIEW.md)
 
-The checkpoint implements Exercises 1 and 2. The original handout and starter
-below remain available; RG-RRT and benchmarking belong to the final submission.
+All four exercises are implemented. The original checkpoint archive and one-page
+report are retained as `Project4_Checkpoint_wl85_ds161.zip` and
+`project4_part1_writeup.pdf`. The presentation recording and Canvas upload must
+be completed by the team.
 
 Plan motions for a torque-controlled pendulum and a car with OMPL's control planners, implement RG-RRT in C++, and compare it with RRT and KPIECE.
 
@@ -22,10 +26,10 @@ Use your Project 2 and Project 3 environment:
 
 ```bash
 micromamba activate ompl_env
-cd project4_2026/template
+cd project4_2026
 make
 ```
 
-Run `./Project4Pendulum` or `./Project4Car`. See [`template/README`](template/README) for implementation, visualization, and benchmark instructions. The starter compiles; the planning functions are student TODOs.
+Run `./Project4Pendulum` or `./Project4Car`. See [`template/README`](template/README) for implementation, visualization, and benchmark instructions. The final implementation covers RRT, KPIECE1, RG-RRT, and benchmarking.
 
-To rebuild the handout, run `make` from `project4_2026/` with LaTeX installed.
+To rebuild the assignment handout, run `make` from `project4/` with LaTeX installed.

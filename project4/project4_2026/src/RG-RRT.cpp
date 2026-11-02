@@ -27,6 +27,8 @@ ompl::control::RGRRT::RGRRT(const SpaceInformationPtr &si) : base::Planner(si, "
 ompl::control::RGRRT::~RGRRT()
 {
     freeMemory();
+    for (auto *control : reachableControlSet_)
+        siC_->freeControl(control);
 }
 
 void ompl::control::RGRRT::setup()
